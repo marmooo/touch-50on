@@ -3,7 +3,6 @@
 
 ## Installation
 1. install [KanjiVG/kanjivg](https://github.com/KanjiVG/kanjivg)
-2. ```npm install```
 
 ## Build
 ```bash build.sh```
