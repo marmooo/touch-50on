@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ja" class="bg-white">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-142997649-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-142997649-1');
+    </script>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>タッチ50音ドリル</title>
+    <meta name="description" content="自動採点付きの50音ドリルです。">
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/touch-50on/sw.js');
+        });
+      }
+    </script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/touch-50on/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/touch-50on/favicon/favicon-48x48.png">
+    <link rel="manifest" href="/touch-50on/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/touch-50on/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/touch-50on/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/touch-50on/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+    <style>
+      .card-header.ruby { padding: 1rem 1.25rem .5rem 1.25rem }
+      html[data-theme="dark"] { filter: invert(1) hue-rotate(180deg) brightness(1.5); }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand navbar-light">
+        <div class="container">
+          <a class="navbar-brand" href="/touch-50on/">
+            タッチ50<ruby>音<rp>(</rp><rt>おん</rt><rp>)</rp></ruby>ドリル
+          </a>
+          <div class="navbar-nav">
+            <button title="ダークモード切替" onclick="toggleDarkMode()" class="ml-2 close">🌓</button>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="container">
+      <noscript>
+        <div class="alert alert-info text-center">JavaScript を ON にしてください</div>
+      </noscript>
+      <p><ruby>自動採点<rp>(</rp><rt>じどうさいてん</rt><rp>)</rp></ruby>つきの50<ruby>音<rp>(</rp><rt>おん</rt><rp>)</rp></ruby>ドリルです。
+      80<ruby>点<rp>(</rp><rt>てん</rt><rp>)</rp></ruby><ruby>以上<rp>(</rp><rt>いじょう</rt><rp>)</rp></ruby>になるまでやってみよう。</p>
+      <div class="row">
+        <div class="col-sm">
+          <div class="card mt-3">
+            <h5 class="card-header ruby">50<ruby>音<rp>(</rp><rt>おん</rt><rp>)</rp></ruby></h5>
+            <div class="card-body">
+              <div class="text-center pb-3">
+                <a href="/touch-50on/drill/?mode=hirahira&problem=50on" class="btn btn-primary m-1" role="button">
+                  あ→あ
+                </a>
+                <a href="/touch-50on/drill/?mode=hirakana&problem=50on" class="btn btn-primary m-1" role="button">
+                  あ→ア
+                </a>
+                <a href="/touch-50on/drill/?mode=kanakana&problem=50on" class="btn btn-primary m-1" role="button">
+                  ア→ア
+                </a>
+                <a href="/touch-50on/drill/?mode=kanahira&problem=50on" class="btn btn-primary m-1" role="button">
+                  ア→あ
+                </a>
+              </div>
+              <details open>
+                <summary>クリアバッジ</summary>
+                <div id="cleared50on" class="my-3">
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="card mt-3">
+            <h5 class="card-header ruby"><ruby>濁音<rp>(</rp><rt>だくおん</rt><rp>)</rp></ruby>・<ruby>半<rp>(</rp><rt>はん</rt><rp>)</rp></ruby><ruby>濁音<rp>(</rp><rt>だくおん</rt><rp>)</rp></ruby></h5>
+            <div class="card-body">
+              <div class="text-center pb-3">
+                <a href="/touch-50on/drill/?mode=hirahira&problem=dakuon" class="btn btn-primary m-1" role="button">
+                  ば→ば
+                </a>
+                <a href="/touch-50on/drill/?mode=hirakana&problem=dakuon" class="btn btn-primary m-1" role="button">
+                  ば→バ
+                </a>
+                <a href="/touch-50on/drill/?mode=kanakana&problem=dakuon" class="btn btn-primary m-1" role="button">
+                  バ→バ
+                </a>
+                <a href="/touch-50on/drill/?mode=kanahira&problem=dakuon" class="btn btn-primary m-1" role="button">
+                  バ→ば
+                </a>
+              </div>
+              <details open>
+                <summary>クリアバッジ</summary>
+                <div id="clearedDakuon" class="my-3">
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-3">
+        <h5 class="card-header ruby">ドリルをつくる</h5>
+        <div class="card-body text-center">
+          <div class="pb-3">
+            <a href="/touch-50on/drill/?q=シツシツシツシツ" class="btn btn-primary m-1" role="button">
+              シ & ツ
+            </a>
+            <a href="/touch-50on/drill/?q=ソンソンソンソン" class="btn btn-primary m-1" role="button">
+              ソ & ン
+            </a>
+            <a href="/touch-50on/drill/?q=ぬめぬめぬめぬめ" class="btn btn-primary m-1" role="button">
+              ぬ & め
+            </a>
+            <a href="/touch-50on/drill/?q=あおあおあおあお" class="btn btn-primary m-1" role="button">
+              あ & お
+            </a>
+            <a href="/touch-50on/drill/?q=ねれねれねれねれ" class="btn btn-primary m-1" role="button">
+              ね & れ
+            </a>
+            <a href="/touch-50on/drill/?q=らちらちらちらち" class="btn btn-primary m-1" role="button">
+              ら & ち
+            </a>
+            <a href="/touch-50on/drill/?q=がガがガがガがガ" class="btn btn-primary m-1" role="button">
+              が & ガ
+            </a>
+          </div>
+          <div class="pt-3">
+            <p><ruby>文字<rp>(</rp><rt>もじ</rt><rp>)</rp></ruby>を<ruby>指定<rp>(</rp><rt>してい</rt><rp>)</rp></ruby>すると、ドリルが<ruby>作<rp>(</rp><rt>つく</rt><rp>)</rp></ruby>れます。</p>
+            <div class="d-flex justify-content-center">
+              <input id="search" class="form-control w-50" type="text" placeholder="が, お, シツ, etc.">
+              <button onclick="generateDrill()" class="btn" title="生成">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                  <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pt-4 text-right">
+        <button onclick="deleteData()" class="btn" title="データ消去">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          <small>データ<ruby>消去<rp>(</rp><rt>しょうきょ</rt><rp>)</rp></ruby></small>
+        </button>
+      </div>
+    </main>
+    <footer class="pt-4 alert text-center">
+      <div class="pt-3">
+        <a class="px-1" href="/">Home</a>
+        <a class="px-1" href="/terms/">Terms</a>
+        <a class="px-1" href="https://github.com/marmooo/touch-50on">Contact</a>
+      </div>
+      <div class="text-muted">&copy; <a href="https://github.com/marmooo">marmooo</a>
+        / <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+      </div>
+    </footer>
+    <script src="index.js"></script>
+  </body>
+</html>
