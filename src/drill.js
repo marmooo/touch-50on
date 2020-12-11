@@ -550,6 +550,7 @@ function calcKakuScore(tegakiCount, tehonCount, inclusionCount) {
 
 function getKakuScores(tegakiData, object, kanjiId, kakusu) {
   var markerWidth = setStrokeWidth(kakusu) * 109 / canvasSize;  // 109 = original svg width/height
+  if (canvasSize > 140) { markerWidth *= 4; }  // TODO: 厳格な算出方法
   var promises = new Array(kakusu);
   for (var i=0; i<kakusu; i++) {
     promises[i] = new Promise((resolve, reject) => {

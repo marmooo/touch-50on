@@ -1,4 +1,4 @@
-var CACHE_NAME = '2020-12-11 22:00';
+var CACHE_NAME = '2020-12-11 23:10';
 var urlsToCache = [
   '/touch-50on/',
   '/touch-50on/index.js',
