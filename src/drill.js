@@ -751,7 +751,6 @@ function scrollEvent(e) {
   if (!['MAIN', 'PROBLEM-BOX', 'A', 'BUTTON'].includes(e.target.tagName)) {
     e.preventDefault();
   }
-  alert(e.target.tagName);
 }
 window.addEventListener("click", scrollEvent, { passive:false });
 window.addEventListener("touchstart", scrollEvent, { passive:false });
