@@ -295,10 +295,6 @@ function unlockAudio() {
   correctAudio.play();
   incorrectAudio.play();
   stupidAudio.play();
-  correctAllAudio.volume = 1;
-  correctAudio.volume = 1;
-  incorrectAudio.volume = 1;
-  stupidAudio.volume = 1;
   correctAllAudio.pause();
   correctAudio.pause();
   incorrectAudio.pause();
@@ -307,6 +303,10 @@ function unlockAudio() {
   correctAudio.currentTime = 0;
   incorrectAudio.currentTime = 0;
   stupidAudio.currentTime = 0;
+  correctAllAudio.volume = 1;
+  correctAudio.volume = 1;
+  incorrectAudio.volume = 1;
+  stupidAudio.volume = 1;
 }
 
 let audioUnlocked = false;
