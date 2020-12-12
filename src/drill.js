@@ -299,6 +299,10 @@ function unlockAudio() {
   correctAudio.pause();
   incorrectAudio.pause();
   stupidAudio.pause();
+  correctAllAudio.currentTime = 0;
+  correctAudio.currentTime = 0;
+  incorrectAudio.currentTime = 0;
+  stupidAudio.currentTime = 0;
   correctAllAudio.volume = 1;
   correctAudio.volume = 1;
   incorrectAudio.volume = 1;
@@ -309,10 +313,7 @@ let audioUnlocked = false;
 function setScoringButton(problemBox, tegakiPanel, tehonPanel, objects, tegakiPads, word) {
   var scoring = problemBox.shadowRoot.querySelector('#scoring');
   scoring.addEventListener('click', function() {
-    // if (!audioUnlocked) {
-    //   unlockAudio();
-    //   audioUnlocked = true;
-    // }
+    unlockAudio();
     getProblemScores(tegakiPanel, tehonPanel, objects, tegakiPads).then(scores => {
       if (scores.every(score => score >= 80)) {
         problemBox.shadowRoot.querySelector('#guard').style.height = '100%';
