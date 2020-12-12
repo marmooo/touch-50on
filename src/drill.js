@@ -312,10 +312,11 @@ function unlockAudio() {
 let audioUnlocked = false;
 function setScoringButton(problemBox, tegakiPanel, tehonPanel, objects, tegakiPads, word) {
   var scoring = problemBox.shadowRoot.querySelector('#scoring');
-  var unlockedAudio = false;
+  var once = true;
   scoring.addEventListener('click', function() {
-    if (!unlockedAudio) {
+    if (once) {
       unlockAudio();
+      once = false;
     }
     getProblemScores(tegakiPanel, tehonPanel, objects, tegakiPads).then(scores => {
       if (scores.every(score => score >= 80)) {
