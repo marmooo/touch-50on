@@ -295,6 +295,10 @@ function unlockAudio() {
   correctAudio.play();
   incorrectAudio.play();
   stupidAudio.play();
+  correctAllAudio.volume = 1;
+  correctAudio.volume = 1;
+  incorrectAudio.volume = 1;
+  stupidAudio.volume = 1;
   correctAllAudio.pause();
   correctAudio.pause();
   incorrectAudio.pause();
@@ -303,17 +307,16 @@ function unlockAudio() {
   correctAudio.currentTime = 0;
   incorrectAudio.currentTime = 0;
   stupidAudio.currentTime = 0;
-  correctAllAudio.volume = 1;
-  correctAudio.volume = 1;
-  incorrectAudio.volume = 1;
-  stupidAudio.volume = 1;
 }
 
 let audioUnlocked = false;
 function setScoringButton(problemBox, tegakiPanel, tehonPanel, objects, tegakiPads, word) {
   var scoring = problemBox.shadowRoot.querySelector('#scoring');
+  var unlockedAudio = false;
   scoring.addEventListener('click', function() {
-    unlockAudio();
+    if (!unlockedAudio) {
+      unlockAudio();
+    }
     getProblemScores(tegakiPanel, tehonPanel, objects, tegakiPads).then(scores => {
       if (scores.every(score => score >= 80)) {
         problemBox.shadowRoot.querySelector('#guard').style.height = '100%';
