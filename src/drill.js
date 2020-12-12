@@ -550,7 +550,8 @@ function calcKakuScore(tegakiCount, tehonCount, inclusionCount) {
   var inclusionScore = (tegakiCount - inclusionCount) / tegakiCount;
   if (inclusionScore > 1) { inclusionScore = 1; }
   // 100点が取れないので少しだけ採点を甘くする
-  var kakuScore = lineScore * inclusionScore * 100 * 1.20;
+  // さらに幼児用なので採点を甘くする
+  var kakuScore = lineScore * inclusionScore * 100 * 1.3;
   if (kakuScore <   0) { kakuScore =   0; }
   if (kakuScore > 100) { kakuScore = 100; }
   if (isNaN(kakuScore)) { kakuScore = 0; }
