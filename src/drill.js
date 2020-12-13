@@ -309,15 +309,10 @@ function unlockAudio() {
   stupidAudio.volume = 1;
 }
 
-let audioUnlocked = false;
 function setScoringButton(problemBox, tegakiPanel, tehonPanel, objects, tegakiPads, word) {
   var scoring = problemBox.shadowRoot.querySelector('#scoring');
-  var once = true;
   scoring.addEventListener('click', function() {
-    if (once) {
-      unlockAudio();
-      once = false;
-    }
+    unlockAudio();
     getProblemScores(tegakiPanel, tehonPanel, objects, tegakiPads).then(scores => {
       if (scores.every(score => score >= 80)) {
         problemBox.shadowRoot.querySelector('#guard').style.height = '100%';
