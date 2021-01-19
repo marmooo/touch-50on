@@ -618,7 +618,7 @@ function report(obj) {
   score /= scores.length;
   if (score >= 80) {
     correctAllAudio.play();
-    var clearedKanjis = localStorage.getItem('touch-abc');
+    var clearedKanjis = localStorage.getItem('touch-50on');
     if (clearedKanjis) {
       kanjis.split('').forEach(kanji => {
         if (!clearedKanjis.includes(kanji)) {
