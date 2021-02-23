@@ -572,13 +572,11 @@ function getKakuScores(tegakiData, object, kanjiId, kakusu) {
         markerPad.fromData([tegakiData[i]]);
         var kakuData = markerContext.getImageData(0, 0, canvasSize, canvasSize).data;
         var tegakiCount = countNoTransparent(kakuData);
-        var tegakiDatum = tegakiData[i];
         getTehonCanvas(object, kanjiId, kakusu, i+1).then(tehonCanvas => {
           var tehonImgData = tehonCanvas.getContext('2d').getImageData(0, 0, canvasSize, canvasSize).data;
           var tehonCount = countNoTransparent(tehonImgData);
 
-          var tegakiImgData = markerContext.getImageData(0, 0, canvasSize, canvasSize);
-          var inclusionCount = getInclusionCount(tegakiImgData, tehonImgData);
+          var inclusionCount = getInclusionCount(kakuData, tehonImgData);
           var kakuScore = calcKakuScore(tegakiCount, tehonCount, inclusionCount);
           resolve([kakuScore, tehonCount]);
         });
