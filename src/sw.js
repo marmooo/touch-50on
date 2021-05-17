@@ -10,7 +10,7 @@ var urlsToCache = [
   '/touch-50on/mp3/correct3.mp3',
   '/touch-50on/mp3/incorrect1.mp3',
   '/touch-50on/mp3/stupid5.mp3',
-  'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css',
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css',
 ];
 
 self.addEventListener('install', function(event) {
