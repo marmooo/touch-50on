@@ -343,8 +343,10 @@ function setSignaturePad(object) {
   return pad;
 }
 
-function setEraser(tegakiPad, tegakiPanel, object, kanjiId) {
-  object.parentNode.querySelector('#eraser').onclick = function() {
+function setEraser(tegakiPad, tegakiPanel, tehonPanel, object, kanjiId) {
+  const currKanji = object.getRootNode().host;
+  const kanjiPos = [...tegakiPanel.children].findIndex(x => x == currKanji);
+  tehonPanel.children[kanjiPos].shadowRoot.querySelector('#eraser').onclick = function() {
     var data = tegakiPad.toData();
     if (data) {
       tegakiPad.clear();
@@ -382,7 +384,7 @@ function loadProblem(problem, answer) {
     var tegakiPad = setSignaturePad(object);
     objects.push(object);
     tegakiPads.push(tegakiPad);
-    setEraser(tegakiPad, tegaki, object, kanjiId);
+    setEraser(tegakiPad, tegaki, tehon, object, kanjiId);
     setSound(tehon, object, problem[i]);
   }
   setScoringButton(problemBox, tegaki, tehon, objects, tegakiPads, problem);
