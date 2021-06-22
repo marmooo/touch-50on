@@ -1,4 +1,4 @@
-var CACHE_NAME = '2021-06-17 21:30';
+var CACHE_NAME = '2021-06-22 12:55';
 var urlsToCache = [
   '/touch-50on/',
   '/touch-50on/index.js',
@@ -10,6 +10,7 @@ var urlsToCache = [
   '/touch-50on/mp3/correct3.mp3',
   '/touch-50on/mp3/incorrect1.mp3',
   '/touch-50on/mp3/stupid5.mp3',
+  '/touch-50on/signature_pad.umd.min.js',
   'https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css',
 ];
 
