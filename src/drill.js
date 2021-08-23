@@ -2,7 +2,7 @@ let correctAudio, incorrectAudio, correctAllAudio, stupidAudio;
 loadAudios();
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioContext = new AudioContext();
-const kanjivgDir = '/kanjivg'
+const kanjivgDir = "/kanjivg";
 let prevCanvasSize;
 let canvasSize = 140;
 let maxWidth = 2;
@@ -10,127 +10,55 @@ if (window.innerWidth >= 768) {
   canvasSize = 280;
   maxWidth = 4;
 }
-
-function prev(obj) {
-  var object = obj.parentNode.parentNode.querySelector('#tehon')
-  var svg = object.contentDocument;
-  var kanjiId = object.dataset.id;
-  var currPos = 0;
-  if (object.dataset.animation) {
-    currPos = parseInt(object.dataset.animation) - 1;
-    if (currPos <= 0) { currPos = 0; }
-  }
-  if (currPos <= 0) {
-    var i = 1;
-    while(true) {
-      var path = svg.getElementById('kvg:' + kanjiId + '-s' + i);
-      if (path) {
-        path.setAttribute('stroke', 'black');
-      } else {
-        break;
-      }
-      i += 1;
-    }
-  } else {
-    var i = 1;
-    while(true) {
-      var path = svg.getElementById('kvg:' + kanjiId + '-s' + i);
-      if (path) {
-        if (i < currPos) {
-          path.setAttribute('stroke', 'black');
-        } else if (i == currPos) {
-          path.setAttribute('stroke', 'red');
-        } else {
-          path.setAttribute('stroke', 'none');
-        }
-      } else {
-        break;
-      }
-      i += 1;
-    }
-  }
-  object.dataset.animation = currPos;
-}
-function next(obj) {
-  var object = obj.parentNode.parentNode.querySelector('#tehon')
-  var svg = object.contentDocument;
-  var kanjiId = object.dataset.id;
-  var currPos = 0;
-  if (object.dataset.animation) {
-    currPos = parseInt(object.dataset.animation);
-  }
-
-  var kakusu = getKakusu(object, kanjiId);
-  if (currPos < kakusu) {
-    currPos += 1;
-  }
-  var i = 1;
-  while(true) {
-    var path = svg.getElementById('kvg:' + kanjiId + '-s' + i);
-    if (path) {
-      if (i < currPos) {
-        path.setAttribute('stroke', 'black');
-      } else if (i == currPos) {
-        path.setAttribute('stroke', 'red');
-      } else {
-        path.setAttribute('stroke', 'none');
-      }
-    } else {
-      break;
-    }
-    i += 1;
-  }
-  object.dataset.animation = currPos;
-}
-
-function toKanji(kanjiId) {
-  return String.fromCodePoint(parseInt('0x' + kanjiId));
-}
-
-function loadConfig() {
-  if (localStorage.getItem('darkMode') == 1) {
-    document.documentElement.dataset.theme = 'dark';
-  }
-  if (localStorage.getItem('hint') == 1) {
-    document.getElementById('hint').innerText = 'EASY';
-  }
-}
 loadConfig();
 
+// function toKanji(kanjiId) {
+//   return String.fromCodePoint(parseInt("0x" + kanjiId));
+// }
+
+function loadConfig() {
+  if (localStorage.getItem("darkMode") == 1) {
+    document.documentElement.dataset.theme = "dark";
+  }
+  if (localStorage.getItem("hint") == 1) {
+    document.getElementById("hint").innerText = "EASY";
+  }
+}
+
 function toggleDarkMode() {
-  if (localStorage.getItem('darkMode') == 1) {
-    localStorage.setItem('darkMode', 0);
+  if (localStorage.getItem("darkMode") == 1) {
+    localStorage.setItem("darkMode", 0);
     delete document.documentElement.dataset.theme;
   } else {
-    localStorage.setItem('darkMode', 1);
-    document.documentElement.dataset.theme = 'dark';
+    localStorage.setItem("darkMode", 1);
+    document.documentElement.dataset.theme = "dark";
   }
 }
 
 function toggleHint(obj) {
-  if (localStorage.getItem('hint') == 1) {
-    localStorage.setItem('hint', 0);
-    obj.innerText = 'HARD';
+  if (localStorage.getItem("hint") == 1) {
+    localStorage.setItem("hint", 0);
+    obj.innerText = "HARD";
   } else {
-    localStorage.setItem('hint', 1);
-    obj.innerText = 'EASY';
+    localStorage.setItem("hint", 1);
+    obj.innerText = "EASY";
   }
   toggleAllStroke();
 }
 
 function toggleScroll() {
-  const scrollable = document.getElementById('scrollable');
-  const pinned = document.getElementById('pinned');
-  if (scrollable.classList.contains('d-none')) {
-    window.removeEventListener("touchstart", scrollEvent, { passive:false });
-    window.removeEventListener("touchmove", scrollEvent, { passive:false });
-    scrollable.classList.remove('d-none');
-    pinned.classList.add('d-none');
+  const scrollable = document.getElementById("scrollable");
+  const pinned = document.getElementById("pinned");
+  if (scrollable.classList.contains("d-none")) {
+    window.removeEventListener("touchstart", scrollEvent, { passive: false });
+    window.removeEventListener("touchmove", scrollEvent, { passive: false });
+    scrollable.classList.remove("d-none");
+    pinned.classList.add("d-none");
   } else {
-    window.addEventListener("touchstart", scrollEvent, { passive:false });
-    window.addEventListener("touchmove", scrollEvent, { passive:false });
-    scrollable.classList.add('d-none');
-    pinned.classList.remove('d-none');
+    window.addEventListener("touchstart", scrollEvent, { passive: false });
+    window.addEventListener("touchmove", scrollEvent, { passive: false });
+    scrollable.classList.add("d-none");
+    pinned.classList.remove("d-none");
   }
 }
 
@@ -155,8 +83,8 @@ function unlockAudio() {
 
 function loadAudio(url) {
   return fetch(url)
-    .then(response => response.arrayBuffer())
-    .then(arrayBuffer => {
+    .then((response) => response.arrayBuffer())
+    .then((arrayBuffer) => {
       return new Promise((resolve, reject) => {
         audioContext.decodeAudioData(arrayBuffer, (audioBuffer) => {
           resolve(audioBuffer);
@@ -169,12 +97,12 @@ function loadAudio(url) {
 
 function loadAudios() {
   promises = [
-    loadAudio('/touch-50on/mp3/correct3.mp3'),
-    loadAudio('/touch-50on/mp3/incorrect1.mp3'),
-    loadAudio('/touch-50on/mp3/correct1.mp3'),
-    loadAudio('/touch-50on/mp3/stupid5.mp3'),
+    loadAudio("/touch-50on/mp3/correct3.mp3"),
+    loadAudio("/touch-50on/mp3/incorrect1.mp3"),
+    loadAudio("/touch-50on/mp3/correct1.mp3"),
+    loadAudio("/touch-50on/mp3/stupid5.mp3"),
   ];
-  Promise.all(promises).then(audioBuffers => {
+  Promise.all(promises).then((audioBuffers) => {
     correctAudio = audioBuffers[0];
     incorrectAudio = audioBuffers[1];
     correctAllAudio = audioBuffers[2];
@@ -182,46 +110,125 @@ function loadAudios() {
   });
 }
 
-customElements.define('problem-box', class extends HTMLElement {
-  constructor() {
-    super();
-    const template = document.getElementById('problem-box').content.cloneNode(true);
-    this.attachShadow({ mode:'open' }).appendChild(template);
+function prevTehon() {
+  const object = this.parentNode.parentNode.querySelector("#tehon");
+  const svg = object.contentDocument;
+  const kanjiId = object.dataset.id;
+  let currPos = 1;
+  if (object.dataset.animation) {
+    currPos = parseInt(object.dataset.animation) - 1;
+    if (currPos < 1) currPos = 1;
   }
-});
-customElements.define('tehon-box', class extends HTMLElement {
-  constructor() {
-    super();
-    const template = document.getElementById('tehon-box').content.cloneNode(true);
-    if (window.innerWidth >= 768) {
-      var canvases = template.querySelectorAll('canvas');
-      [...canvases].forEach(canvas => {
-        canvas.setAttribute('width', canvasSize);
-        canvas.setAttribute('height', canvasSize);
-      });
+  let i = 1;
+  while (true) {
+    const path = svg.getElementById("kvg:" + kanjiId + "-s" + i);
+    if (path) {
+      if (i < currPos) {
+        path.setAttribute("stroke", "black");
+      } else if (i == currPos) {
+        path.setAttribute("stroke", "red");
+      } else {
+        path.setAttribute("stroke", "none");
+      }
+    } else {
+      break;
     }
-    this.attachShadow({ mode:'open' }).appendChild(template);
+    i += 1;
   }
-});
-customElements.define('tegaki-box', class extends HTMLElement {
-  constructor() {
-    super();
-    const template = document.getElementById('tegaki-box').content.cloneNode(true);
-    if (window.innerWidth >= 768) {
-      var canvases = template.querySelectorAll('canvas');
-      [...canvases].forEach(canvas => {
-        canvas.setAttribute('width', canvasSize);
-        canvas.setAttribute('height', canvasSize);
-      });
+  object.dataset.animation = currPos;
+}
+
+function nextTehon() {
+  const object = this.parentNode.parentNode.querySelector("#tehon");
+  const svg = object.contentDocument;
+  const kanjiId = object.dataset.id;
+  let currPos = 0;
+  if (object.dataset.animation) {
+    currPos = parseInt(object.dataset.animation);
+  }
+
+  const kakusu = getKakusu(object, kanjiId);
+  if (currPos < kakusu) {
+    currPos += 1;
+  }
+  let i = 1;
+  while (true) {
+    const path = svg.getElementById("kvg:" + kanjiId + "-s" + i);
+    if (path) {
+      if (i < currPos) {
+        path.setAttribute("stroke", "black");
+      } else if (i == currPos) {
+        path.setAttribute("stroke", "red");
+      } else {
+        path.setAttribute("stroke", "none");
+      }
+    } else {
+      break;
     }
-    this.attachShadow({ mode:'open' }).appendChild(template);
+    i += 1;
   }
-});
+  object.dataset.animation = currPos;
+}
+
+customElements.define(
+  "problem-box",
+  class extends HTMLElement {
+    constructor() {
+      super();
+      const template = document.getElementById("problem-box").content.cloneNode(
+        true,
+      );
+      this.attachShadow({ mode: "open" }).appendChild(template);
+    }
+  },
+);
+customElements.define(
+  "tehon-box",
+  class extends HTMLElement {
+    constructor() {
+      super();
+      const template = document.getElementById("tehon-box").content.cloneNode(
+        true,
+      );
+      if (window.innerWidth >= 768) {
+        const canvases = template.querySelectorAll("canvas");
+        [...canvases].forEach((canvas) => {
+          canvas.setAttribute("width", canvasSize);
+          canvas.setAttribute("height", canvasSize);
+        });
+      }
+      template.querySelector("#prevTehon").onclick = prevTehon;
+      template.querySelector("#nextTehon").onclick = nextTehon;
+      this.attachShadow({ mode: "open" }).appendChild(template);
+    }
+  },
+);
+customElements.define(
+  "tegaki-box",
+  class extends HTMLElement {
+    constructor() {
+      super();
+      const template = document.getElementById("tegaki-box").content.cloneNode(
+        true,
+      );
+      if (window.innerWidth >= 768) {
+        const canvases = template.querySelectorAll("canvas");
+        [...canvases].forEach((canvas) => {
+          canvas.setAttribute("width", canvasSize);
+          canvas.setAttribute("height", canvasSize);
+        });
+      }
+      this.attachShadow({ mode: "open" }).appendChild(template);
+    }
+  },
+);
 
 function getKakusu(object, kanjiId) {
-  var max = 1;
-  while(true) {
-    var path = object.contentDocument.getElementById('kvg:' + kanjiId + '-s' + max);
+  let max = 1;
+  while (true) {
+    const path = object.contentDocument.getElementById(
+      "kvg:" + kanjiId + "-s" + max,
+    );
     if (path) {
       max += 1;
     } else {
@@ -231,38 +238,28 @@ function getKakusu(object, kanjiId) {
   return max - 1;
 }
 
-function sleep(time) {
-  const d1 = new Date();
-  while (true) {
-    const d2 = new Date();
-    if (d2 - d1 > time) {
-      return;
-    }
-  }
-}
-
 function getTehonCanvas(object, kanjiId, kakusu, kakuNo) {
-  return new Promise(function(resolve, reject) {
-    var clonedContent = object.contentDocument.cloneNode(true);
-    var id = 'kvg:StrokePaths_' + kanjiId;
-    var paths = clonedContent.querySelector('[id="' + id + '"]');
-    paths.style.stroke = 'black';
-    for (var j=1; j<=kakusu; j++) {
-      var path = clonedContent.getElementById('kvg:' + kanjiId + '-s' + j);
+  return new Promise(function (resolve) {
+    const clonedContent = object.contentDocument.cloneNode(true);
+    const id = "kvg:StrokePaths_" + kanjiId;
+    const paths = clonedContent.querySelector('[id="' + id + '"]');
+    paths.style.stroke = "black";
+    for (let j = 1; j <= kakusu; j++) {
+      const path = clonedContent.getElementById("kvg:" + kanjiId + "-s" + j);
       if (kakuNo != j) {
         path.remove();
       }
     }
-    var text = clonedContent.documentElement.outerHTML;
-    var blob = new Blob([text], {type: 'image/svg+xml'});
-    var url = URL.createObjectURL(blob);
-    var img = new Image();
+    const text = clonedContent.documentElement.outerHTML;
+    const blob = new Blob([text], { type: "image/svg+xml" });
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
     img.src = url;
-    img.onload = function() {
-      var canvas = document.createElement('canvas');
+    img.onload = function () {
+      const canvas = document.createElement("canvas");
       canvas.width = canvasSize;
       canvas.height = canvasSize;
-      var ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0, 0, canvasSize, canvasSize);
       resolve(canvas);
     };
@@ -270,122 +267,170 @@ function getTehonCanvas(object, kanjiId, kakusu, kakuNo) {
 }
 
 function toKanjiId(str) {
-  var hex = str.codePointAt(0).toString(16);
-  return ('00000' + hex).slice(-5);
+  const hex = str.codePointAt(0).toString(16);
+  return ("00000" + hex).slice(-5);
 }
 
 function loadSVG(kanjiId, parentNode, pos, loadCanvas) {
-  var box;
+  let box;
   if (loadCanvas) {
-    box = document.createElement('tegaki-box');
+    box = document.createElement("tegaki-box");
   } else {
-    box = document.createElement('tehon-box');
+    box = document.createElement("tehon-box");
   }
-  var object = box.shadowRoot.querySelector('object');
-  object.setAttribute('data', kanjivgDir + '/' + kanjiId + '.svg');
-  object.setAttribute('data-id', kanjiId);
-  object.setAttribute('data-pos', pos);
+  const object = box.shadowRoot.querySelector("object");
+  object.setAttribute("data", kanjivgDir + "/" + kanjiId + ".svg");
+  object.setAttribute("data-id", kanjiId);
+  object.setAttribute("data-pos", pos);
   if (loadCanvas) {
-    object.setAttribute('onload', 'initSVG(this)');
+    object.setAttribute("onload", "_initSVG(this)");
   }
   parentNode.appendChild(box);
   return object;
 }
 
-function showKanjiScore(kanjiScore, kakuScores, scoreObj, tehonKanji, object, kanjiId, kakusu) {
-  var kanjiScore = Math.floor(kanjiScore);
+function showKanjiScore(
+  kanjiScore,
+  kakuScores,
+  scoreObj,
+  tehonKanji,
+  object,
+  kanjiId,
+  kakusu,
+) {
+  kanjiScore = Math.floor(kanjiScore);
   if (kanjiScore >= 80) {
     playAudio(correctAudio);
   } else {
     playAudio(incorrectAudio);
   }
-  scoreObj.classList.remove('d-none');
+  scoreObj.classList.remove("d-none");
   scoreObj.innerText = kanjiScore;
-  if (mode != 'conv' && mode != 'hirakana' && mode != 'kanahira') {
-    for (var i=0; i<kakusu; i++) {
-      changePathColor(i+1, tehonKanji, kanjiId, 'black');
+  if (mode != "conv" && mode != "hirakana" && mode != "kanahira") {
+    for (let i = 0; i < kakusu; i++) {
+      changePathColor(i + 1, tehonKanji, kanjiId, "black");
     }
-    for (var i=0; i<kakusu; i++) {
+    for (let i = 0; i < kakusu; i++) {
       if (!kakuScores[i][0] || kakuScores[i][0] < 80) {
-        changePathColor(i+1, tehonKanji, kanjiId, 'red');
+        changePathColor(i + 1, tehonKanji, kanjiId, "red");
       }
     }
   }
-  if (localStorage.getItem('hint') != 1) {
-    changeAllColor(object, kanjiId, 'lightgray');
+  if (localStorage.getItem("hint") != 1) {
+    changeAllColor(object, kanjiId, "lightgray");
   }
 }
 
-function getKanjiScores(kakuScores, scoreObj, tehonKanji, object, kanjiId, kakusu) {
-  return Promise.all(kakuScores).then(kakuScores => {
-    var kanjiScore = 0;
-    var totalTehonCount = 0;
-    kakuScores.forEach(kakuData => {
-      var [kakuScore, tehonCount] = kakuData;
+function getKanjiScores(
+  kakuScores,
+  scoreObj,
+  tehonKanji,
+  object,
+  kanjiId,
+  kakusu,
+) {
+  return Promise.all(kakuScores).then((kakuScores) => {
+    let kanjiScore = 0;
+    let totalTehonCount = 0;
+    kakuScores.forEach((kakuData) => {
+      const [kakuScore, tehonCount] = kakuData;
       kanjiScore += kakuScore * tehonCount;
       totalTehonCount += tehonCount;
     });
     kanjiScore /= totalTehonCount;
-    showKanjiScore(kanjiScore, kakuScores, scoreObj, tehonKanji, object, kanjiId, kakusu);
+    showKanjiScore(
+      kanjiScore,
+      kakuScores,
+      scoreObj,
+      tehonKanji,
+      object,
+      kanjiId,
+      kakusu,
+    );
     return kanjiScore;
   });
 }
 
 function getProblemScores(tegakiPanel, tehonPanel, objects, tegakiPads) {
-  var promises = [];
+  const promises = [];
   objects.forEach((object, i) => {
-    var kanjiId = object.dataset.id;
-    var kakusu = getKakusu(object, kanjiId);
-    var pos = parseInt(object.dataset.pos);
-    var kanjiScores = 0;
-    var tegakiData = tegakiPads[i].toData();
+    const kanjiId = object.dataset.id;
+    const kakusu = getKakusu(object, kanjiId);
+    const pos = parseInt(object.dataset.pos);
+    let kanjiScores = 0;
+    const tegakiData = tegakiPads[i].toData();
     if (tegakiData.length != 0) {
-      var tehonKanji = tehonPanel.children[pos].shadowRoot.querySelector('object');
-      var scoreObj = tegakiPanel.children[pos].shadowRoot.querySelector('#score');
-      var kakuScores = getKakuScores(tegakiData, object, kanjiId, kakusu);
-      kanjiScores = getKanjiScores(kakuScores, scoreObj, tehonKanji, object, kanjiId, kakusu);
+      const tehonKanji = tehonPanel.children[pos].shadowRoot.querySelector(
+        "object",
+      );
+      const scoreObj = tegakiPanel.children[pos].shadowRoot.querySelector(
+        "#score",
+      );
+      const kakuScores = getKakuScores(tegakiData, object, kanjiId, kakusu);
+      kanjiScores = getKanjiScores(
+        kakuScores,
+        scoreObj,
+        tehonKanji,
+        object,
+        kanjiId,
+        kakusu,
+      );
     }
     promises[i] = kanjiScores;
   });
   return Promise.all(promises);
 }
 
-function setScoringButton(problemBox, tegakiPanel, tehonPanel, objects, tegakiPads, word) {
-  var scoring = problemBox.shadowRoot.querySelector('#scoring');
-  scoring.addEventListener('click', function() {
-    getProblemScores(tegakiPanel, tehonPanel, objects, tegakiPads).then(scores => {
-      if (scores.every(score => score >= 80)) {
-        problemBox.shadowRoot.querySelector('#guard').style.height = '100%';
-        var next = problemBox.nextElementSibling;
-        if (next) {
-          next.shadowRoot.querySelector('#guard').style.height = '0';
-          const headerHeight = document.getElementById('header').offsetHeight;
-          const top = next.getBoundingClientRect().top + document.documentElement.scrollTop - headerHeight;
-          window.scrollTo({ top:top, behavior:'smooth' });
-        } else {
-          window.removeEventListener('touchstart', scrollEvent, { passive:false });
-          window.removeEventListener('touchmove', scrollEvent, { passive:false });
+function setScoringButton(
+  problemBox,
+  tegakiPanel,
+  tehonPanel,
+  objects,
+  tegakiPads,
+  word,
+) {
+  const scoring = problemBox.shadowRoot.querySelector("#scoring");
+  scoring.addEventListener("click", function () {
+    getProblemScores(tegakiPanel, tehonPanel, objects, tegakiPads).then(
+      (scores) => {
+        if (scores.every((score) => score >= 80)) {
+          problemBox.shadowRoot.querySelector("#guard").style.height = "100%";
+          const next = problemBox.nextElementSibling;
+          if (next) {
+            next.shadowRoot.querySelector("#guard").style.height = "0";
+            const headerHeight = document.getElementById("header").offsetHeight;
+            const top = next.getBoundingClientRect().top +
+              document.documentElement.scrollTop - headerHeight;
+            window.scrollTo({ top: top, behavior: "smooth" });
+          } else {
+            window.removeEventListener("touchstart", scrollEvent, {
+              passive: false,
+            });
+            window.removeEventListener("touchmove", scrollEvent, {
+              passive: false,
+            });
+          }
         }
-      }
-      var clearedKanjis = localStorage.getItem('touch-50on');
-      if (!clearedKanjis) { clearedKanjis = ''; }
-      scores.forEach((score, i) => {
-        if (score < 40) {
-          // 点数があまりにも低いものは合格リストから除外
-          clearedKanjis = clearedKanjis.replace(word[i], '');
-        }
-      });
-      localStorage.setItem('touch-50on', clearedKanjis);
-    });
+        let clearedKanjis = localStorage.getItem("touch-50on");
+        if (!clearedKanjis) clearedKanjis = "";
+        scores.forEach((score, i) => {
+          if (score < 40) {
+            // 点数があまりにも低いものは合格リストから除外
+            clearedKanjis = clearedKanjis.replace(word[i], "");
+          }
+        });
+        localStorage.setItem("touch-50on", clearedKanjis);
+      },
+    );
   });
 }
 
 function setSignaturePad(object) {
-  var canvas = object.parentNode.querySelector('#tegaki');
-  var pad = new SignaturePad(canvas, {
+  const canvas = object.parentNode.querySelector("#tegaki");
+  const pad = new SignaturePad(canvas, {
     minWidth: maxWidth,
     maxWidth: maxWidth,
-    penColor: 'black',
+    penColor: "black",
     throttle: 0,
     minDistance: 0,
   });
@@ -394,75 +439,77 @@ function setSignaturePad(object) {
 
 function setEraser(tegakiPad, tegakiPanel, tehonPanel, object, kanjiId) {
   const currKanji = object.getRootNode().host;
-  const kanjiPos = [...tegakiPanel.children].findIndex(x => x == currKanji);
-  tehonPanel.children[kanjiPos].shadowRoot.querySelector('#eraser').onclick = function() {
-    var data = tegakiPad.toData();
-    if (data) {
-      tegakiPad.clear();
-    }
-    var pos = parseInt(object.dataset.pos);
-    var scoreObj = tegakiPanel.children[pos].shadowRoot.querySelector('#score');
-    scoreObj.classList.add('d-none');
-    if (localStorage.getItem('hint') != 1) {
-      changeAllColor(object, kanjiId, 'none');
-    }
-  }
+  const kanjiPos = [...tegakiPanel.children].findIndex((x) => x == currKanji);
+  tehonPanel.children[kanjiPos].shadowRoot.querySelector("#eraser").onclick =
+    function () {
+      const data = tegakiPad.toData();
+      if (data) {
+        tegakiPad.clear();
+      }
+      const pos = parseInt(object.dataset.pos);
+      const scoreObj = tegakiPanel.children[pos].shadowRoot.querySelector(
+        "#score",
+      );
+      scoreObj.classList.add("d-none");
+      if (localStorage.getItem("hint") != 1) {
+        changeAllColor(object, kanjiId, "none");
+      }
+    };
 }
 
 function setSound(tehonPanel, object, kanji) {
-  var pos = parseInt(object.dataset.pos);
-  var sound = tehonPanel.children[pos].shadowRoot.querySelector('#sound');
-  var hira = kanaToHira(kanji);
-  sound.onclick = function() {
-    new Audio('/touch-50on/voice/波音リツ/' + hira + '.mp3').play();
-  }
+  const pos = parseInt(object.dataset.pos);
+  const sound = tehonPanel.children[pos].shadowRoot.querySelector("#sound");
+  const hira = kanaToHira(kanji);
+  sound.onclick = function () {
+    new Audio("/touch-50on/voice/波音リツ/" + hira + ".mp3").play();
+  };
 }
 
 function loadProblem(problem, answer) {
-  var problemBox = document.createElement('problem-box');
-  var shadow = problemBox.shadowRoot;
-  var objects = [];
-  var tegakiPads = [];
-  var tehon = shadow.querySelector('#tehon');
-  var tegaki = shadow.querySelector('#tegaki');
-  var tegakiPads = [];
-  for (var i=0; i<problem.length; i++) {
-    var kanjiId = toKanjiId(problem[i]);
+  const problemBox = document.createElement("problem-box");
+  const shadow = problemBox.shadowRoot;
+  const objects = [];
+  const tegakiPads = [];
+  const tehon = shadow.querySelector("#tehon");
+  const tegaki = shadow.querySelector("#tegaki");
+  for (let i = 0; i < problem.length; i++) {
+    const kanjiId = toKanjiId(problem[i]);
     loadSVG(kanjiId, tehon, i, false);
-    var object = loadSVG(toKanjiId(answer[i]), tegaki, i, true);
-    var tegakiPad = setSignaturePad(object);
+    const object = loadSVG(toKanjiId(answer[i]), tegaki, i, true);
+    const tegakiPad = setSignaturePad(object);
     objects.push(object);
     tegakiPads.push(tegakiPad);
     setEraser(tegakiPad, tegaki, tehon, object, kanjiId);
     setSound(tehon, object, problem[i]);
   }
   setScoringButton(problemBox, tegaki, tehon, objects, tegakiPads, problem);
-  document.getElementById('problems').appendChild(problemBox);
+  document.getElementById("problems").appendChild(problemBox);
   return tegakiPads;
 }
 
 function resizeTegakiContents(tegakiPads) {
-  tegakiPads.forEach(tegakiPad => {
-    var canvas = tegakiPad._canvas;
+  tegakiPads.forEach((tegakiPad) => {
+    const canvas = tegakiPad._canvas;
     resizeCanvasSize(canvas, canvasSize);
-    var data = tegakiPad.toData();
+    const data = tegakiPad.toData();
     if (data.length > 0) {
       tegakiPad.maxWidth = maxWidth;
       tegakiPad.minWidth = maxWidth;
       if (prevCanvasSize < canvasSize) {
-        data.forEach((tegakiData, i) => {
-          tegakiData.forEach((datum, j) => {
+        for (let i = 0; i < data.length; i++) {
+          for (let j = 0; j < data[i].length; j++) {
             data[i][j].x *= 2;
             data[i][j].y *= 2;
-          });
-        });
+          }
+        }
       } else {
-        data.forEach((tegakiData, i) => {
-          tegakiData.forEach((datum, j) => {
+        for (let i = 0; i < data.length; i++) {
+          for (let j = 0; j < data[i].length; j++) {
             data[i][j].x /= 2;
             data[i][j].y /= 2;
-          });
-        });
+          }
+        }
       }
       tegakiPad.fromData(data);
     }
@@ -472,33 +519,33 @@ function resizeTegakiContents(tegakiPads) {
 function resizeCanvasSize(canvas, canvasSize) {
   // canvas.style.width = canvasSize + 'px';
   // canvas.style.height = canvasSize + 'px';
-  canvas.setAttribute('width', canvasSize);
-  canvas.setAttribute('height', canvasSize);
+  canvas.setAttribute("width", canvasSize);
+  canvas.setAttribute("height", canvasSize);
 }
 
 function resizeTehonContents() {
-  var problems = document.getElementById('problems').children;
+  const problems = document.getElementById("problems").children;
   for (const problem of problems) {
-    var tegakiBoxes = problem.shadowRoot.querySelector('#tegaki').children;
-    var tehonBoxes = problem.shadowRoot.querySelector('#tehon').children;
-    [...tegakiBoxes].forEach(tegakiBox => {
-      var canvas = tegakiBox.shadowRoot.querySelector('#tehon');
+    const tegakiBoxes = problem.shadowRoot.querySelector("#tegaki").children;
+    const tehonBoxes = problem.shadowRoot.querySelector("#tehon").children;
+    [...tegakiBoxes].forEach((tegakiBox) => {
+      const canvas = tegakiBox.shadowRoot.querySelector("#tehon");
       resizeCanvasSize(canvas, canvasSize);
     });
-    [...tehonBoxes].forEach(tehonBox => {
-      var canvas = tehonBox.shadowRoot.querySelector('#tehon');
+    [...tehonBoxes].forEach((tehonBox) => {
+      const canvas = tehonBox.shadowRoot.querySelector("#tehon");
       resizeCanvasSize(canvas, canvasSize);
     });
   }
 }
 
 function loadDrill(problems1, problems2) {
-  var tegakiPads = [];
-  for (var i=0; i<problems1.length; i++) {
-    var pads = loadProblem(problems1[i], problems2[i]);
+  let tegakiPads = [];
+  for (let i = 0; i < problems1.length; i++) {
+    const pads = loadProblem(problems1[i], problems2[i]);
     tegakiPads = tegakiPads.concat(pads);
   }
-  window.onresize = function() {
+  window.onresize = function () {
     prevCanvasSize = canvasSize;
     if (window.innerWidth >= 768) {
       canvasSize = 280;
@@ -520,49 +567,51 @@ function setStrokeWidth(kakusu) {
 }
 
 function toggleAllStroke() {
-  var problems = document.getElementById('problems').children;
+  const problems = document.getElementById("problems").children;
   for (const problem of problems) {
-    var tegakiBoxes = problem.shadowRoot.querySelector('#tegaki').children;
+    const tegakiBoxes = problem.shadowRoot.querySelector("#tegaki").children;
     for (const tegakiBox of tegakiBoxes) {
-      var object = tegakiBox.shadowRoot.querySelector('object');
-      var kanjiId = object.dataset.id;
-      var kakusu = getKakusu(object, kanjiId);
+      const object = tegakiBox.shadowRoot.querySelector("object");
+      const kanjiId = object.dataset.id;
+      const kakusu = getKakusu(object, kanjiId);
       toggleStroke(object, kanjiId, kakusu);
     }
   }
 }
 
 function toggleStroke(object, kanjiId, kakusu) {
-  var id = 'kvg:StrokePaths_' + kanjiId;
-  var paths = object.contentDocument.querySelector('[id="' + id + '"]');
-  if (localStorage.getItem('hint') != 1) {
-    paths.style.stroke = 'none';
+  const id = "kvg:StrokePaths_" + kanjiId;
+  const paths = object.contentDocument.querySelector('[id="' + id + '"]');
+  if (localStorage.getItem("hint") != 1) {
+    paths.style.stroke = "none";
   } else {
-    paths.style.stroke = 'lightgray';
+    paths.style.stroke = "lightgray";
   }
   paths.style.strokeWidth = setStrokeWidth(kakusu);
 }
 
 function changeAllColor(object, kanjiId, color) {
-  var id = 'kvg:StrokePaths_' + kanjiId;
-  var paths = object.contentDocument.querySelector('[id="' + id + '"]');
+  const id = "kvg:StrokePaths_" + kanjiId;
+  const paths = object.contentDocument.querySelector('[id="' + id + '"]');
   paths.style.stroke = color;
 }
 
 function changePathColor(pos, object, kanjiId, color) {
-  var path = object.contentDocument.getElementById('kvg:' + kanjiId + '-s' + pos);
-  path.setAttribute('stroke', color);
+  const path = object.contentDocument.getElementById(
+    "kvg:" + kanjiId + "-s" + pos,
+  );
+  path.setAttribute("stroke", color);
 }
 
 function removeNumbers(object, kanjiId) {
-  var id = 'kvg:StrokeNumbers_' + kanjiId;
-  var numbers = object.contentDocument.querySelector('[id="' + id + '"]');
+  const id = "kvg:StrokeNumbers_" + kanjiId;
+  const numbers = object.contentDocument.querySelector('[id="' + id + '"]');
   numbers.remove();
 }
 
 function countNoTransparent(data) {
-  var count = 0;
-  for (var i=3; i < data.length; i+=4) {
+  let count = 0;
+  for (let i = 3; i < data.length; i += 4) {
     if (data[i] != 0) {
       count += 1;
     }
@@ -571,63 +620,78 @@ function countNoTransparent(data) {
 }
 
 function getInclusionCount(tegakiImgData, tehonImgData) {
-  for (var i=3; i<tegakiImgData.length; i+=4) {
+  for (let i = 3; i < tegakiImgData.length; i += 4) {
     if (tehonImgData[i] != 0) {
       tegakiImgData[i] = 0;
     }
   }
-  var inclusionCount = countNoTransparent(tegakiImgData);
+  const inclusionCount = countNoTransparent(tegakiImgData);
   return inclusionCount;
 }
 
 function calcKakuScore(tegakiCount, tehonCount, inclusionCount) {
   // 線長を優遇し過ぎると ["未","末"], ["土","士"] の見分けができなくなる
-  var lineScore = (1 - Math.abs((tehonCount - tegakiCount) / tehonCount));
-  if (lineScore > 1) { lineScore = 1; }
+  let lineScore = (1 - Math.abs((tehonCount - tegakiCount) / tehonCount));
+  if (lineScore > 1) lineScore = 1;
   // 包含率を優遇し過ぎると ["一","つ"], ["二","＝"] の見分けができなくなる
-  var inclusionScore = (tegakiCount - inclusionCount) / tegakiCount;
-  if (inclusionScore > 1) { inclusionScore = 1; }
+  let inclusionScore = (tegakiCount - inclusionCount) / tegakiCount;
+  if (inclusionScore > 1) inclusionScore = 1;
   // 100点が取れないので少しだけ採点を甘くする
   // 0.7x0.7x2=1 なので 70点くらいの綺麗さのものが 係数 2 で 100点になる
   // さらに幼児用なので採点を甘くする (60点くらいのものが 100点になるように)
-  var kakuScore = lineScore * inclusionScore * 100 * 2.8;
-  if (kakuScore <   0) { kakuScore =   0; }
-  if (kakuScore > 100) { kakuScore = 100; }
-  if (isNaN(kakuScore)) { kakuScore = 0; }
+  let kakuScore = lineScore * inclusionScore * 100 * 2.8;
+  if (kakuScore < 0) kakuScore = 0;
+  if (kakuScore > 100) kakuScore = 100;
+  if (isNaN(kakuScore)) kakuScore = 0;
   return kakuScore;
 }
 
 function getKakuScores(tegakiData, object, kanjiId, kakusu) {
-  var markerWidth = setStrokeWidth(kakusu) * 109 / canvasSize;  // 109 = original svg width/height
-  if (canvasSize > 140) { markerWidth *= 4; }  // TODO: 厳格な算出方法
-  var promises = new Array(kakusu);
-  for (var i=0; i<kakusu; i++) {
-    promises[i] = new Promise((resolve, reject) => {
+  let markerWidth = setStrokeWidth(kakusu) * 109 / canvasSize; // 109 = original svg width/height
+  if (canvasSize > 140) markerWidth *= 4; // TODO: 厳格な算出方法
+  const promises = new Array(kakusu);
+  for (let i = 0; i < kakusu; i++) {
+    promises[i] = new Promise((resolve) => {
       if (tegakiData[i]) {
-        var markerCanvas = document.createElement('canvas');
-        markerCanvas.setAttribute('width', canvasSize);
-        markerCanvas.setAttribute('height', canvasSize);
-        var markerContext = markerCanvas.getContext('2d');
-        var markerPad = new SignaturePad(markerCanvas, {
+        const markerCanvas = document.createElement("canvas");
+        markerCanvas.setAttribute("width", canvasSize);
+        markerCanvas.setAttribute("height", canvasSize);
+        const markerContext = markerCanvas.getContext("2d");
+        const markerPad = new SignaturePad(markerCanvas, {
           minWidth: markerWidth,
           maxWidth: markerWidth,
-          penColor: 'black',
+          penColor: "black",
         });
         markerPad.fromData([tegakiData[i]]);
-        var kakuData = markerContext.getImageData(0, 0, canvasSize, canvasSize).data;
-        var tegakiCount = countNoTransparent(kakuData);
-        getTehonCanvas(object, kanjiId, kakusu, i+1).then(tehonCanvas => {
-          var tehonImgData = tehonCanvas.getContext('2d').getImageData(0, 0, canvasSize, canvasSize).data;
-          var tehonCount = countNoTransparent(tehonImgData);
+        const kakuData =
+          markerContext.getImageData(0, 0, canvasSize, canvasSize).data;
+        const tegakiCount = countNoTransparent(kakuData);
+        getTehonCanvas(object, kanjiId, kakusu, i + 1).then((tehonCanvas) => {
+          const tehonImgData = tehonCanvas.getContext("2d").getImageData(
+            0,
+            0,
+            canvasSize,
+            canvasSize,
+          ).data;
+          const tehonCount = countNoTransparent(tehonImgData);
 
-          var inclusionCount = getInclusionCount(kakuData, tehonImgData);
-          var kakuScore = calcKakuScore(tegakiCount, tehonCount, inclusionCount);
+          const inclusionCount = getInclusionCount(kakuData, tehonImgData);
+          const kakuScore = calcKakuScore(
+            tegakiCount,
+            tehonCount,
+            inclusionCount,
+          );
           resolve([kakuScore, tehonCount]);
         });
       } else {
-        getTehonCanvas(object, kanjiId, kakusu, i+1).then(tehonCanvas => {
-          var tehonImgData = tehonCanvas.getContext('2d').getImageData(0, 0, canvasSize, canvasSize).data;
-          var tehonCount = countNoTransparent(tehonImgData);
+        getTehonCanvas(object, kanjiId, kakusu, i + 1).then((tehonCanvas) => {
+          const tehonImgData = tehonCanvas.getContext("2d").getImageData(
+            0,
+            0,
+            canvasSize,
+            canvasSize,
+          ).data;
+          const tehonCount = countNoTransparent(tehonImgData);
           resolve([0, tehonCount]);
         });
       }
@@ -636,136 +700,133 @@ function getKakuScores(tegakiData, object, kanjiId, kakusu) {
   return promises;
 }
 
-function initSVG(object) {
-  var kanjiId = object.dataset.id;
-  var kakusu = getKakusu(object, kanjiId);
+function _initSVG(object) {
+  const kanjiId = object.dataset.id;
+  const kakusu = getKakusu(object, kanjiId);
   toggleStroke(object, kanjiId, kakusu);
-  removeNumbers(object, kanjiId)
+  removeNumbers(object, kanjiId);
 }
 
-function report(obj) {
-  var scores = [];
-  var problems = document.getElementById('problems').children;
-  for (var i=0; i<problems.length; i++) {
-    var tegakis = problems[i].shadowRoot.querySelector('#tegaki').children;
-    for (var j=0; j<tegakis.length; j++) {
-      var score = tegakis[j].shadowRoot.querySelector('#score').innerText;
+function report() {
+  const scores = [];
+  const problems = document.getElementById("problems").children;
+  for (let i = 0; i < problems.length; i++) {
+    const tegakis = problems[i].shadowRoot.querySelector("#tegaki").children;
+    for (let j = 0; j < tegakis.length; j++) {
+      const score = tegakis[j].shadowRoot.querySelector("#score").innerText;
       scores.push(parseInt(score));
     }
   }
-  var score = 0;
-  for (var i=0; i<scores.length; i++) {
+  let score = 0;
+  for (let i = 0; i < scores.length; i++) {
     score += scores[i];
   }
   score /= scores.length;
   if (score >= 80) {
     playAudio(correctAllAudio);
-    var clearedKanjis = localStorage.getItem('touch-50on');
+    let clearedKanjis = localStorage.getItem("touch-50on");
     if (clearedKanjis) {
-      kanjis.split('').forEach(kanji => {
+      kanjis.split("").forEach((kanji) => {
         if (!clearedKanjis.includes(kanji)) {
           clearedKanjis += kanji;
         }
       });
-      localStorage.setItem('touch-50on', clearedKanjis);
+      localStorage.setItem("touch-50on", clearedKanjis);
     } else {
-      localStorage.setItem('touch-50on', kanjis);
+      localStorage.setItem("touch-50on", kanjis);
     }
-    document.getElementById('report').classList.add('d-none');
-    document.getElementById('correctReport').classList.remove('d-none');
+    document.getElementById("report").classList.add("d-none");
+    document.getElementById("correctReport").classList.remove("d-none");
     setTimeout(() => {
-      location.href = '/touch-50on/';
+      location.href = "/touch-50on/";
     }, 3000);
   } else {
     playAudio(stupidAudio);
-    document.getElementById('report').classList.add('d-none');
-    document.getElementById('incorrectReport').classList.remove('d-none');
-    setTimeout(function() {
-      document.getElementById('report').classList.remove('d-none');
-      document.getElementById('incorrectReport').classList.add('d-none');
+    document.getElementById("report").classList.add("d-none");
+    document.getElementById("incorrectReport").classList.remove("d-none");
+    setTimeout(function () {
+      document.getElementById("report").classList.remove("d-none");
+      document.getElementById("incorrectReport").classList.add("d-none");
     }, 6000);
   }
 }
 
-function shuffle(array) {
-  for(var i = array.length - 1; i > 0; i--){
-    var r = Math.floor(Math.random() * (i + 1));
-    var tmp = array[i];
-    array[i] = array[r];
-    array[r] = tmp;
-  }
-  return array;
-}
+// function shuffle(array) {
+//   for (let i = array.length - 1; i > 0; i--) {
+//     const r = Math.floor(Math.random() * (i + 1));
+//     const tmp = array[i];
+//     array[i] = array[r];
+//     array[r] = tmp;
+//   }
+//   return array;
+// }
 
 function parseQuery(queryString) {
-  var query = {};
-  var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
-  for (var i = 0; i < pairs.length; i++) {
-    var pair = pairs[i].split('=');
-    query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+  const query = {};
+  const pairs = (queryString[0] === "?" ? queryString.substr(1) : queryString)
+    .split("&");
+  for (let i = 0; i < pairs.length; i++) {
+    const pair = pairs[i].split("=");
+    query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || "");
   }
   return query;
 }
 
-function uniq(array) {
-  return array.filter((elem, index, self) => self.indexOf(elem) === index);
-}
-
 function kanaToHira(str) {
-  return str.replace(/[\u30a1-\u30f6]/g, function(match) {
-    var chr = match.charCodeAt(0) - 0x60;
+  return str.replace(/[\u30a1-\u30f6]/g, function (match) {
+    const chr = match.charCodeAt(0) - 0x60;
     return String.fromCharCode(chr);
   });
 }
 
-function hiraToKana(str) {
-  return str.replace(/[\u3041-\u3096]/g, function(match) {
-    var chr = match.charCodeAt(0) + 0x60;
-    return String.fromCharCode(chr);
-  });
-}
+// function hiraToKana(str) {
+//   return str.replace(/[\u3041-\u3096]/g, function (match) {
+//     const chr = match.charCodeAt(0) + 0x60;
+//     return String.fromCharCode(chr);
+//   });
+// }
 
 function convHirakana(str) {
-  for (var i=0; i<str.length; i++) {
+  for (let i = 0; i < str.length; i++) {
     if (str[i].test(/[\u3041-\u3096]/)) {
-      var chr = str[i].charCodeAt(0) + 0x60;
+      const chr = str[i].charCodeAt(0) + 0x60;
       str[i] = String.fromCharCode(chr);
     } else if (str[i].test(/[\u30a1-\u30f6]/)) {
-      var chr = str[i].charCodeAt(0) - 0x60;
+      const chr = str[i].charCodeAt(0) - 0x60;
       str[i] = String.fromCharCode(chr);
     }
   }
   return str;
 }
 
-let kanjis = '';
-let mode = 'hirahira';
+let kanjis = "";
+let mode = "hirahira";
 function initQuery() {
-  var problems1, problems2;
-  var queries = parseQuery(location.search);
-  mode = queries['mode'];
-  kanjis = queries['q'];
-  var problemQuery = queries['problem'];
+  let problems1, problems2;
+  const queries = parseQuery(location.search);
+  mode = queries["mode"];
+  kanjis = queries["q"];
+  const problemQuery = queries["problem"];
   if (kanjis) {
-    if (mode == 'conv') {
-      var conved = convHirakana(kanjis);
-      problems1 = kanjis.split('');
-      problems2 = conved.split('');
+    if (mode == "conv") {
+      const conved = convHirakana(kanjis);
+      problems1 = kanjis.split("");
+      problems2 = conved.split("");
     } else {
-      problems1 = kanjis.split('');
-      problems2 = kanjis.split('');
+      problems1 = kanjis.split("");
+      problems2 = kanjis.split("");
     }
   } else {
-    if (problemQuery == '50on') {
-      var hira50on = Array.from('あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわん');
-      var kana50on = Array.from('アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワン');
-      if (mode == 'hirahira') {
+    if (problemQuery == "50on") {
+      const hira50on = Array.from("あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわん");
+      const kana50on = Array.from("アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワン");
+      if (mode == "hirahira") {
         problems1 = hira50on;
         problems2 = hira50on;
-      } else if (mode == 'hirakana') {
+      } else if (mode == "hirakana") {
         problems1 = hira50on;
         problems2 = kana50on;
-      } else if (mode == 'kanakana') {
+      } else if (mode == "kanakana") {
         problems1 = kana50on;
         problems2 = kana50on;
       } else {
@@ -773,15 +834,15 @@ function initQuery() {
         problems2 = hira50on;
       }
     } else {
-      var hiradakuon = Array.from('がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ');
-      var kanadakuon = Array.from('ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ');
-      if (mode == 'hirahira') {
+      const hiradakuon = Array.from("がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ");
+      const kanadakuon = Array.from("ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ");
+      if (mode == "hirahira") {
         problems1 = hiradakuon;
         problems2 = hiradakuon;
-      } else if (mode == 'hirakana') {
+      } else if (mode == "hirakana") {
         problems1 = hiradakuon;
         problems2 = kanadakuon;
-      } else if (mode == 'kanakana') {
+      } else if (mode == "kanakana") {
         problems1 = kanadakuon;
         problems2 = kanadakuon;
       } else {
@@ -791,15 +852,28 @@ function initQuery() {
     }
   }
   loadDrill(problems1, problems2);
-  document.getElementById('problems').children[0].shadowRoot.querySelector('#guard').style.height = '0';
+  document.getElementById("problems").children[0].shadowRoot.querySelector(
+    "#guard",
+  ).style.height = "0";
 }
 // https://qiita.com/noraworld/items/2834f2e6f064e6f6d41a
 // https://webinlet.com/2020/ios11以降でピンチインアウト拡大縮小禁止
 // 手を置いた時の誤爆を防ぎつつスクロールは許可
 function scrollEvent(e) {
-  if (!['MAIN', 'PROBLEM-BOX', 'A', 'BUTTON', 'path'].includes(e.target.tagName)) {
+  if (
+    !["MAIN", "PROBLEM-BOX", "A", "BUTTON", "path"].includes(e.target.tagName)
+  ) {
     e.preventDefault();
   }
 }
-document.addEventListener('click', unlockAudio, { once:true, useCapture:true });
 
+initQuery();
+
+document.getElementById("toggleDarkMode").onclick = toggleDarkMode;
+document.getElementById("hint").onclick = toggleHint;
+document.getElementById("toggleScroll").onclick = toggleScroll;
+document.getElementById("reportButton").onclick = report;
+document.addEventListener("click", unlockAudio, {
+  once: true,
+  useCapture: true,
+});
