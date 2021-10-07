@@ -1,4 +1,4 @@
-var CACHE_NAME = '2021-09-12 08:36';
+var CACHE_NAME = '2021-10-08 00:19';
 var urlsToCache = [
   "/touch-50on/",
   "/touch-50on/index.js",
@@ -12,7 +12,7 @@ var urlsToCache = [
   "/touch-50on/mp3/stupid5.mp3",
   "/touch-50on/favicon/original.svg",
   "/touch-50on/signature_pad.umd.min.js",
-  "https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css",
+  "https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css",
 ];
 
 self.addEventListener("install", function (event) {
