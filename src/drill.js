@@ -21,7 +21,7 @@ function loadConfig() {
     document.documentElement.dataset.theme = "dark";
   }
   if (localStorage.getItem("hint") == 1) {
-    document.getElementById("hint").innerText = "EASY";
+    document.getElementById("hint").textContent = "EASY";
   }
 }
 
@@ -38,10 +38,10 @@ function toggleDarkMode() {
 function toggleHint(obj) {
   if (localStorage.getItem("hint") == 1) {
     localStorage.setItem("hint", 0);
-    obj.innerText = "HARD";
+    obj.textContent = "HARD";
   } else {
     localStorage.setItem("hint", 1);
-    obj.innerText = "EASY";
+    obj.textContent = "EASY";
   }
   toggleAllStroke();
 }
@@ -305,7 +305,7 @@ function showKanjiScore(
     playAudio(incorrectAudio);
   }
   scoreObj.classList.remove("d-none");
-  scoreObj.innerText = kanjiScore;
+  scoreObj.textContent = kanjiScore;
   if (mode != "conv" && mode != "hirakana" && mode != "kanahira") {
     for (let i = 0; i < kakusu; i++) {
       changePathColor(i + 1, tehonKanji, kanjiId, "black");
@@ -713,7 +713,7 @@ function report() {
   for (let i = 0; i < problems.length; i++) {
     const tegakis = problems[i].shadowRoot.querySelector("#tegaki").children;
     for (let j = 0; j < tegakis.length; j++) {
-      const score = tegakis[j].shadowRoot.querySelector("#score").innerText;
+      const score = tegakis[j].shadowRoot.querySelector("#score").textContent;
       scores.push(parseInt(score));
     }
   }
