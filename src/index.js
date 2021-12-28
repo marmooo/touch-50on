@@ -40,7 +40,7 @@ function deleteData() {
 
 function generateDrill() {
   const words = document.getElementById("search").value;
-  if (words && words.match(/^[ぁ-んァ-ヶ]+$/)) {
+  if (words && /^[ぁ-んァ-ヶ]+$/.test(words)) {
     location.href = `/touch-50on/drill/?q=${words}`;
   }
 }
