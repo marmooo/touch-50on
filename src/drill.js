@@ -653,6 +653,8 @@ function getKakuScores(tegakiData, object, kanjiId, kakusu) {
   for (let i = 0; i < kakusu; i++) {
     promises[i] = new Promise((resolve) => {
       if (tegakiData[i]) {
+        tegakiData[i].minWidth = markerWidth;
+        tegakiData[i].maxWidth = markerWidth;
         const markerCanvas = document.createElement("canvas");
         markerCanvas.setAttribute("width", canvasSize);
         markerCanvas.setAttribute("height", canvasSize);
