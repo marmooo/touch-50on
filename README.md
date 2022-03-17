@@ -4,7 +4,7 @@
 
 ## Installation
 
-1. install [KanjiVG/kanjivg](https://github.com/KanjiVG/kanjivg)
+install [KanjiVG/kanjivg](https://github.com/KanjiVG/kanjivg)
 
 ## Build
 
