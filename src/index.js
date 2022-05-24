@@ -4,9 +4,18 @@ const hiradakuon = Array.from("がぎぐげござじずぜぞだぢづでどば�
 const kanadakuon = Array.from("ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ");
 loadConfig();
 
+function changeLevel() {
+  const level = this.selectedIndex;
+  localStorage.setItem("touch-kanji-level", level);
+}
+
 function loadConfig() {
   if (localStorage.getItem("darkMode") == 1) {
     document.documentElement.dataset.theme = "dark";
+  }
+  if (localStorage.getItem("touch-50on-level")) {
+    const level = parseInt(localStorage.getItem("touch-50on-level"));
+    document.getElementById("levelOption").options[level].selected = true;
   }
 }
 
@@ -78,6 +87,7 @@ setCleared(problems2);
 document.getElementById("toggleDarkMode").onclick = toggleDarkMode;
 document.getElementById("deleteData").onclick = deleteData;
 document.getElementById("generateDrill").onclick = generateDrill;
+document.getElementById("levelOption").onchange = changeLevel;
 document.getElementById("search").addEventListener("keydown", function (event) {
   if (event.key == "Enter") {
     const words = this.value;
