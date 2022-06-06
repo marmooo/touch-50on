@@ -4,7 +4,8 @@
 
 ## Installation
 
-install [KanjiVG/kanjivg](https://github.com/KanjiVG/kanjivg)
+install [KanjiVG/kanjivg](https://github.com/KanjiVG/kanjivg) licensed under the
+[CC BY-SA 3.0](https://creativecommons.org/licenses/by/3.0/)
 
 ## Build
 
@@ -18,6 +19,4 @@ CC BY-SA 4.0
 
 ## Attribution
 
-- 音声: [波音リツ](http://canon-voice.com/)
-- [KanjiVG/kanjivg](https://github.com/KanjiVG/kanjivg) is licensed under the
-  [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).
+音声: [波音リツ](http://canon-voice.com/)
