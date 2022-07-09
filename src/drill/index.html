@@ -45,7 +45,7 @@
       <nav class="navbar navbar-expand navbar-light">
         <div class="container flex-wrap">
           <a class="navbar-brand" href="/touch-50on/">
-            <img src="/touch-50on/favicon/favicon.svg" width="32" height="32">
+            <img alt="タッチ50音ドリル" src="/touch-50on/favicon/favicon.svg" width="32" height="32">
             タッチ50音ドリル
           </a>
           <div class="navbar-nav">
@@ -57,7 +57,7 @@
                 <path d="M4.146.146A.5.5 0 0 1 4.5 0h7a.5.5 0 0 1 .5.5c0 .68-.342 1.174-.646 1.479-.126.125-.25.224-.354.298v4.431l.078.048c.203.127.476.314.751.555C12.36 7.775 13 8.527 13 9.5a.5.5 0 0 1-.5.5h-4v4.5c0 .276-.224 1.5-.5 1.5s-.5-1.224-.5-1.5V10h-4a.5.5 0 0 1-.5-.5c0-.973.64-1.725 1.17-2.189A5.921 5.921 0 0 1 5 6.708V2.277a2.77 2.77 0 0 1-.354-.298C4.342 1.674 4 1.179 4 .5a.5.5 0 0 1 .146-.354z"/>
               </svg>
             </button>
-            <button id="hint" id="hint" type="button" class="btn btn-sm btn-secondary ms-1">HARD</button>
+            <button id="hint" type="button" class="btn btn-sm btn-secondary ms-1">HARD</button>
             <button title="ダークモード切替" id="toggleDarkMode" class="fs-4 btn p-0 ms-1">🌓</button>
           </div>
         </div>
@@ -90,63 +90,63 @@
     <template id="problem-box">
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
       <style>
-        #info { padding-top:0.5rem; }
-        #toolbox { padding-bottom:0.5rem; }
-        #problem { width:320px; height:100%; text-align:center; padding:10px; position:relative; }
+        .info { padding-top:0.5rem; }
+        .toolbox { padding-bottom:0.5rem; }
+        .problem { width:320px; height:100%; text-align:center; padding:10px; position:relative; }
         .words { display:inline-block; position:relative; }
         object { display:block; border:solid 1px silver; touch-action:none; }
         @media only screen {
-          #guard { touch-action:none; position:absolute; top:0; left:0; background-color:rgba(0, 0, 0, .25); width:100%; height:100%; }
+          .guard { touch-action:none; position:absolute; top:0; left:0; background-color:rgba(0, 0, 0, .25); width:100%; height:100%; }
         }
         @media screen and (min-width:768px) {
-          #problem { width:640px; }
+          .problem { width:640px; }
         }
       </style>
-      <div id="problem">
-        <div id="info"></div>
-        <div id="tehon" class="words"></div>
-        <div id="tegaki" class="words"></div>
-        <div id="toolbox">
-          <button id="scoring" class="btn btn-primary">採点する</button>
+      <div class="problem">
+        <div class="info"></div>
+        <div class="tehon words"></div>
+        <div class="tegaki words"></div>
+        <div class="toolbox">
+          <button class="scoring btn btn-primary">採点する</button>
         </div>
-        <div id="guard"></div>
+        <div class="guard"></div>
       </div>
     </template>
     <template id="tehon-box">
       <style>
         .container { position:relative; }
         object { display:block; border:solid 1px silver; }
-        #sound {
+        .sound {
           position:absolute; top:1px; left:1px; background-color:white; cursor:pointer;
           -webkit-touch-callout:none; touch-action:none;
         }
-        #eraser {
+        .eraser {
           position:absolute; top:1px; right:1px; background-color:white; cursor:pointer;
           -webkit-touch-callout:none; touch-action:none;
         }
-        #prevTehon {
+        .prevTehon {
           position:absolute; bottom:1px; left:1px; background-color:white; cursor:pointer;
           -webkit-touch-callout:none; touch-action:none;
         }
-        #nextTehon {
+        .nextTehon {
           position:absolute; bottom:1px; right:1px; background-color:white; cursor:pointer;
           -webkit-touch-callout:none; touch-action:none;
         }
         .d-none { display:none; }
         @media screen and (min-width:768px) {
-          #sound, #eraser, #prevSvg, #nextSvg { width:32px; height:32px; }
+          .sound, .eraser, .prevSvg, .nextSvg { width:32px; height:32px; }
           object { width:280px; height:280px; }
         }
       </style>
       <div class="container">
-        <object id="tehon" type="image/svg+xml" width="140" height="140"></object>
-        <img id="sound" src="/touch-50on/svg/sound.svg" width="16" height="16" alt="発音を聴く">
-        <img src="/touch-50on/svg/eraser.svg" id="eraser" width="16" height="16" alt="文字を消す">
-        <label id="prevTehon" title="戻る">
-          <svg id="prevSvg" width="16" height="16" viewBox="0 0 16 16" fill="currentcolor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.5 3.5A.5.5.0 0 0 4 4v8a.5.5.0 0 0 1 0V4a.5.5.0 0 0-.5-.5z"></path><path d="M4.903 8.697l6.364 3.692c.54.313 1.232-.066 1.232-.697V4.308c0-.63-.692-1.01-1.232-.696L4.903 7.304a.802.802.0 0 0 0 1.393z"></path></svg>
+        <object class="tehon" type="image/svg+xml" width="140" height="140"></object>
+        <img class="sound" src="/touch-50on/svg/sound.svg" width="16" height="16" alt="発音を聴く">
+        <img src="/touch-50on/svg/eraser.svg" class="eraser" width="16" height="16" alt="文字を消す">
+        <label class="prevTehon" title="戻る">
+          <svg class="prevSvg" width="16" height="16" viewBox="0 0 16 16" fill="currentcolor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.5 3.5A.5.5.0 0 0 4 4v8a.5.5.0 0 0 1 0V4a.5.5.0 0 0-.5-.5z"></path><path d="M4.903 8.697l6.364 3.692c.54.313 1.232-.066 1.232-.697V4.308c0-.63-.692-1.01-1.232-.696L4.903 7.304a.802.802.0 0 0 0 1.393z"></path></svg>
         </label>
-        <label id="nextTehon" title="進む">
-          <svg id="nextSvg" width="16" height="16" viewBox="0 0 16 16" fill="currentcolor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12 3.5a.5.5.0 0 1 .5.5v8a.5.5.0 0 1-1 0V4a.5.5.0 0 1 .5-.5z"></path><path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802.0 0 1 0 1.393z"></path></svg>
+        <label class="nextTehon" title="進む">
+          <svg class="nextSvg" width="16" height="16" viewBox="0 0 16 16" fill="currentcolor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12 3.5a.5.5.0 0 1 .5.5v8a.5.5.0 0 1-1 0V4a.5.5.0 0 1 .5-.5z"></path><path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802.0 0 1 0 1.393z"></path></svg>
         </label>
       </div>
     </template>
@@ -156,22 +156,22 @@
         object { display:block; border:solid 1px silver; }
         canvas { position:absolute; top:0px; left:0px; }
         .d-none { display:none; }
-        #score {
+        .score {
           position:absolute; top:1px; left:1px;
           width:32px; height:32px; font-size:16px; line-height:32px;
           color:red; background-color:white; border:1px solid red; border-radius:16px;
         }
         @media screen and (min-width:768px) {
-          #score {
+          .score {
             width:64px; height:64px; font-size:32px; line-height:64px; border-radius:32px;
           }
           object, canvas { width:280px; height:280px; }
         }
       </style>
       <div class="container">
-        <object id="tehon" type="image/svg+xml" width="140" height="140"></object>
-        <canvas id="tegaki" width="140" height="140"></canvas>
-        <div id="score" class="d-none"></div>
+        <object class="tehon" type="image/svg+xml" width="140" height="140"></object>
+        <canvas class="tegaki" width="140" height="140"></canvas>
+        <div class="score d-none"></div>
       </div>
     </template>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.5/dist/signature_pad.umd.min.js" integrity="sha256-DmYmpIUR97yasUhSuGMksoucIJaDfl2zDMpOrd4dNps=" crossorigin="anonymous"></script>

@@ -115,7 +115,7 @@ function loadAudios() {
 }
 
 function prevTehon() {
-  const object = this.parentNode.parentNode.querySelector("#tehon");
+  const object = this.parentNode.parentNode.querySelector(".tehon");
   const svg = object.contentDocument;
   const kanjiId = object.dataset.id;
   let currPos = 1;
@@ -143,7 +143,7 @@ function prevTehon() {
 }
 
 function nextTehon() {
-  const object = this.parentNode.parentNode.querySelector("#tehon");
+  const object = this.parentNode.parentNode.querySelector(".tehon");
   const svg = object.contentDocument;
   const kanjiId = object.dataset.id;
   let currPos = 0;
@@ -201,8 +201,8 @@ customElements.define(
           canvas.setAttribute("height", canvasSize);
         });
       }
-      template.querySelector("#prevTehon").onclick = prevTehon;
-      template.querySelector("#nextTehon").onclick = nextTehon;
+      template.querySelector(".prevTehon").onclick = prevTehon;
+      template.querySelector(".nextTehon").onclick = nextTehon;
       this.attachShadow({ mode: "open" }).appendChild(template);
     }
   },
@@ -368,7 +368,7 @@ function getProblemScores(tegakiPanel, tehonPanel, objects, tegakiPads) {
         "object",
       );
       const scoreObj = tegakiPanel.children[pos].shadowRoot.querySelector(
-        "#score",
+        ".score",
       );
       const kakuScores = getKakuScores(tegakiData, object, kanjiId, kakusu);
       kanjiScores = getKanjiScores(
@@ -393,15 +393,15 @@ function setScoringButton(
   tegakiPads,
   word,
 ) {
-  const scoring = problemBox.shadowRoot.querySelector("#scoring");
+  const scoring = problemBox.shadowRoot.querySelector(".scoring");
   scoring.addEventListener("click", function () {
     getProblemScores(tegakiPanel, tehonPanel, objects, tegakiPads).then(
       (scores) => {
         if (scores.every((score) => score >= 80)) {
-          problemBox.shadowRoot.querySelector("#guard").style.height = "100%";
+          problemBox.shadowRoot.querySelector(".guard").style.height = "100%";
           const next = problemBox.nextElementSibling;
           if (next) {
-            next.shadowRoot.querySelector("#guard").style.height = "0";
+            next.shadowRoot.querySelector(".guard").style.height = "0";
             const headerHeight = document.getElementById("header").offsetHeight;
             const top = next.getBoundingClientRect().top +
               document.documentElement.scrollTop - headerHeight;
@@ -430,7 +430,7 @@ function setScoringButton(
 }
 
 function setSignaturePad(object) {
-  const canvas = object.parentNode.querySelector("#tegaki");
+  const canvas = object.parentNode.querySelector(".tegaki");
   const pad = new SignaturePad(canvas, {
     minWidth: maxWidth,
     maxWidth: maxWidth,
@@ -444,7 +444,7 @@ function setSignaturePad(object) {
 function setEraser(tegakiPad, tegakiPanel, tehonPanel, object, kanjiId) {
   const currKanji = object.getRootNode().host;
   const kanjiPos = [...tegakiPanel.children].findIndex((x) => x == currKanji);
-  tehonPanel.children[kanjiPos].shadowRoot.querySelector("#eraser").onclick =
+  tehonPanel.children[kanjiPos].shadowRoot.querySelector(".eraser").onclick =
     function () {
       const data = tegakiPad.toData();
       if (data) {
@@ -452,7 +452,7 @@ function setEraser(tegakiPad, tegakiPanel, tehonPanel, object, kanjiId) {
       }
       const pos = parseInt(object.dataset.pos);
       const scoreObj = tegakiPanel.children[pos].shadowRoot.querySelector(
-        "#score",
+        ".score",
       );
       scoreObj.classList.add("d-none");
       if (localStorage.getItem("hint") != 1) {
@@ -463,7 +463,7 @@ function setEraser(tegakiPad, tegakiPanel, tehonPanel, object, kanjiId) {
 
 function setSound(tehonPanel, object, kanji) {
   const pos = parseInt(object.dataset.pos);
-  const sound = tehonPanel.children[pos].shadowRoot.querySelector("#sound");
+  const sound = tehonPanel.children[pos].shadowRoot.querySelector(".sound");
   const hira = kanaToHira(kanji);
   sound.onclick = function () {
     new Audio("/touch-50on/voice/波音リツ/" + hira + ".mp3").play();
@@ -475,8 +475,8 @@ function loadProblem(problem, answer) {
   const shadow = problemBox.shadowRoot;
   const objects = [];
   const tegakiPads = [];
-  const tehon = shadow.querySelector("#tehon");
-  const tegaki = shadow.querySelector("#tegaki");
+  const tehon = shadow.querySelector(".tehon");
+  const tegaki = shadow.querySelector(".tegaki");
   for (let i = 0; i < problem.length; i++) {
     const kanjiId = toKanjiId(problem[i]);
     loadSVG(kanjiId, tehon, i, false);
@@ -530,14 +530,14 @@ function resizeCanvasSize(canvas, canvasSize) {
 function resizeTehonContents() {
   const problems = document.getElementById("problems").children;
   for (const problem of problems) {
-    const tegakiBoxes = problem.shadowRoot.querySelector("#tegaki").children;
-    const tehonBoxes = problem.shadowRoot.querySelector("#tehon").children;
+    const tegakiBoxes = problem.shadowRoot.querySelector(".tegaki").children;
+    const tehonBoxes = problem.shadowRoot.querySelector(".tehon").children;
     [...tegakiBoxes].forEach((tegakiBox) => {
-      const canvas = tegakiBox.shadowRoot.querySelector("#tehon");
+      const canvas = tegakiBox.shadowRoot.querySelector(".tehon");
       resizeCanvasSize(canvas, canvasSize);
     });
     [...tehonBoxes].forEach((tehonBox) => {
-      const canvas = tehonBox.shadowRoot.querySelector("#tehon");
+      const canvas = tehonBox.shadowRoot.querySelector(".tehon");
       resizeCanvasSize(canvas, canvasSize);
     });
   }
@@ -573,7 +573,7 @@ function setStrokeWidth(kakusu) {
 function toggleAllStroke() {
   const problems = document.getElementById("problems").children;
   for (const problem of problems) {
-    const tegakiBoxes = problem.shadowRoot.querySelector("#tegaki").children;
+    const tegakiBoxes = problem.shadowRoot.querySelector(".tegaki").children;
     for (const tegakiBox of tegakiBoxes) {
       const object = tegakiBox.shadowRoot.querySelector("object");
       const kanjiId = object.dataset.id;
@@ -732,9 +732,9 @@ function report() {
   const scores = [];
   const problems = document.getElementById("problems").children;
   for (let i = 0; i < problems.length; i++) {
-    const tegakis = problems[i].shadowRoot.querySelector("#tegaki").children;
+    const tegakis = problems[i].shadowRoot.querySelector(".tegaki").children;
     for (let j = 0; j < tegakis.length; j++) {
-      const score = tegakis[j].shadowRoot.querySelector("#score").textContent;
+      const score = tegakis[j].shadowRoot.querySelector(".score").textContent;
       scores.push(parseInt(score));
     }
   }
@@ -874,7 +874,7 @@ function initQuery() {
   }
   loadDrill(problems1, problems2);
   document.getElementById("problems").children[0].shadowRoot.querySelector(
-    "#guard",
+    ".guard",
   ).style.height = "0";
 }
 // https://qiita.com/noraworld/items/2834f2e6f064e6f6d41a
