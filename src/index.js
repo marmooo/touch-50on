@@ -88,9 +88,9 @@ document.getElementById("toggleDarkMode").onclick = toggleDarkMode;
 document.getElementById("deleteData").onclick = deleteData;
 document.getElementById("generateDrill").onclick = generateDrill;
 document.getElementById("levelOption").onchange = changeLevel;
-document.getElementById("search").addEventListener("keydown", function (event) {
+document.getElementById("search").addEventListener("keydown", (event) => {
   if (event.key == "Enter") {
-    const words = this.value;
+    const words = event.target.value;
     location.href = `/touch-50on/drill/?q=${words}`;
   }
 }, false);
