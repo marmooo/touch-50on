@@ -782,17 +782,6 @@ function report() {
 //   return array;
 // }
 
-function parseQuery(queryString) {
-  const query = {};
-  const pairs = (queryString[0] === "?" ? queryString.substr(1) : queryString)
-    .split("&");
-  for (let i = 0; i < pairs.length; i++) {
-    const pair = pairs[i].split("=");
-    query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || "");
-  }
-  return query;
-}
-
 function kanaToHira(str) {
   return str.replace(/[\u30a1-\u30f6]/g, function (match) {
     const chr = match.charCodeAt(0) - 0x60;
@@ -824,10 +813,10 @@ let kanjis = "";
 let mode = "hirahira";
 function initQuery() {
   let problems1, problems2;
-  const queries = parseQuery(location.search);
-  mode = queries["mode"];
-  kanjis = queries["q"];
-  const problemQuery = queries["problem"];
+  const query = new URLSearchParams(location.search);
+  mode = query.get("mode");
+  kanjis = query.get("q");
+  const problemQuery = query.get("problem");
   if (kanjis) {
     if (mode == "conv") {
       const conved = convHirakana(kanjis);
