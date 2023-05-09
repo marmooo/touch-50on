@@ -1,11 +1,19 @@
-const hira50on = Array.from("あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわん");
-const kana50on = Array.from("アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワン");
-const hiradakuon = Array.from("がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ");
-const kanadakuon = Array.from("ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ");
+const hira50on = Array.from(
+  "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわん",
+);
+const kana50on = Array.from(
+  "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワン",
+);
+const hiradakuon = Array.from(
+  "がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ",
+);
+const kanadakuon = Array.from(
+  "ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ",
+);
 loadConfig();
 
-function changeLevel() {
-  const level = this.selectedIndex;
+function changeLevel(event) {
+  const level = event.target.selectedIndex;
   localStorage.setItem("touch-kanji-level", level);
 }
 
