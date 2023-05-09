@@ -264,7 +264,7 @@ function loadSVG(kanjiId, parentNode, pos, loadCanvas) {
   object.setAttribute("data-id", kanjiId);
   object.setAttribute("data-pos", pos);
   if (loadCanvas) {
-    object.setAttribute("onload", "_initSVG(this)");
+    object.onload = initSVG;
   }
   parentNode.appendChild(box);
   return object;
@@ -698,7 +698,8 @@ function getKakuScores(tegakiData, object, kanjiId, kakusu) {
   return promises;
 }
 
-function _initSVG(object) {
+function initSVG(event) {
+  const object = event.target;
   const kanjiId = object.dataset.id;
   const kakusu = getKakusu(object, kanjiId);
   toggleStroke(object, kanjiId, kakusu);
