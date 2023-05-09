@@ -97,8 +97,8 @@ function unlockAudio() {
   audioContext.resume();
 }
 
-function prevTehon() {
-  const object = this.parentNode.parentNode.querySelector(".tehon");
+function prevTehon(event) {
+  const object = event.target.parentNode.parentNode.querySelector(".tehon");
   const svg = object.contentDocument;
   const kanjiId = object.dataset.id;
   let currPos = 1;
@@ -125,8 +125,8 @@ function prevTehon() {
   object.dataset.animation = currPos;
 }
 
-function nextTehon() {
-  const object = this.parentNode.parentNode.querySelector(".tehon");
+function nextTehon(event) {
+  const object = event.target.parentNode.parentNode.querySelector(".tehon");
   const svg = object.contentDocument;
   const kanjiId = object.dataset.id;
   let currPos = 0;
