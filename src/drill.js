@@ -41,13 +41,13 @@ function toggleDarkMode() {
   }
 }
 
-function toggleHint(obj) {
+function toggleHint(event) {
   if (localStorage.getItem("hint") == 1) {
     localStorage.setItem("hint", 0);
-    obj.textContent = "HARD";
+    event.target.textContent = "HARD";
   } else {
     localStorage.setItem("hint", 1);
-    obj.textContent = "EASY";
+    event.target.textContent = "EASY";
   }
   toggleAllStroke();
 }
