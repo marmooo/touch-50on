@@ -102,12 +102,3 @@ document.getElementById("search").addEventListener("keydown", (event) => {
     location.href = `/touch-50on/drill/?q=${words}`;
   }
 }, false);
-
-// disable troublesome iOS features
-// - double tap zoom
-document.ondblclick = (e) => {
-  e.preventDefault();
-};
-// - selection context menu
-// TODO: need better solution
-document.body.style.webkitUserSelect = "none";
