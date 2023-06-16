@@ -13,6 +13,8 @@ loadAudio("stupid", "/touch-50on/mp3/stupid5.mp3");
 loadAudio("correct", "/touch-50on/mp3/correct3.mp3");
 loadAudio("correctAll", "/touch-50on/mp3/correct1.mp3");
 loadAudio("incorrect", "/touch-50on/mp3/incorrect1.mp3");
+let japaneseVoices = [];
+loadVoices();
 loadConfig();
 
 // function toKanji(kanjiId) {
@@ -95,6 +97,40 @@ async function loadAudio(name, url) {
 
 function unlockAudio() {
   audioContext.resume();
+}
+
+function loadVoices() {
+  // https://stackoverflow.com/questions/21513706/
+  const allVoicesObtained = new Promise((resolve) => {
+    let voices = speechSynthesis.getVoices();
+    if (voices.length !== 0) {
+      resolve(voices);
+    } else {
+      let supported = false;
+      speechSynthesis.addEventListener("voiceschanged", () => {
+        supported = true;
+        voices = speechSynthesis.getVoices();
+        resolve(voices);
+      });
+      setTimeout(() => {
+        if (!supported) {
+          document.getElementById("noTTS").classList.remove("d-none");
+        }
+      }, 1000);
+    }
+  });
+  allVoicesObtained.then((voices) => {
+    englishVoices = voices.filter((voice) => voice.lang == "ja-JP");
+  });
+}
+
+function speak(text) {
+  speechSynthesis.cancel();
+  const msg = new SpeechSynthesisUtterance(text);
+  msg.voice = englishVoices[Math.floor(Math.random() * englishVoices.length)];
+  msg.lang = "ja-JP";
+  speechSynthesis.speak(msg);
+  return msg;
 }
 
 function prevTehon(event) {
@@ -441,12 +477,13 @@ function setEraser(tegakiPad, tegakiPanel, tehonPanel, object, kanjiId) {
     };
 }
 
-function setSound(tehonPanel, object, kanji) {
+function setSound(tehonPanel, object, text) {
   const pos = parseInt(object.dataset.pos);
   const sound = tehonPanel.children[pos].shadowRoot.querySelector(".sound");
-  const hira = kanaToHira(kanji);
-  sound.onclick = function () {
-    new Audio("/touch-50on/voice/波音リツ/" + hira + ".mp3").play();
+  let hira = kanaToHira(text);
+  sound.onclick = () => {
+    if (hira == "ん") hira = "んん";
+    speak(hira);
   };
 }
 

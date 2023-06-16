@@ -12,11 +12,3 @@ install [KanjiVG/kanjivg](https://github.com/KanjiVG/kanjivg) licensed under the
 ```
 bash build.sh
 ```
-
-## License
-
-CC BY-SA 4.0
-
-## Attribution
-
-音声: [波音リツ](http://canon-voice.com/)
