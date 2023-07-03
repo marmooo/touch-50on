@@ -62,24 +62,15 @@ function generateDrill() {
   }
 }
 
-function setLinkTemplate() {
-  const a = document.createElement("a");
-  a.className = "me-1 mb-1 btn btn-outline-secondary btn-sm";
-  return a;
-}
-const linkTemplate = setLinkTemplate();
-
-function setProblems(obj, kanjis) {
-  while (obj.lastElementChild) {
-    obj.removeChild(obj.lastChild);
-  }
-  for (let i = 0; i < kanjis.length; i++) {
-    const problem = kanjis[i].repeat(6);
-    const a = linkTemplate.cloneNode();
-    a.href = `/touch-50on/drill/?q=${problem}`;
-    a.textContent = kanjis[i];
-    obj.appendChild(a);
-  }
+function setProblems(obj, words) {
+  let html = "";
+  words.forEach((word) => {
+    const q = word.repeat(6);
+    const url = `/touch-50on/drill/?q=${q}`;
+    const klass = "me-1 mb-1 btn btn-sm btn-outline-secondary";
+    html += `<a href="${url}" class="${klass}">${word}</a>`;
+  });
+  obj.innerHTML = html;
 }
 
 const problems1 = document.getElementById("cleared50on");
