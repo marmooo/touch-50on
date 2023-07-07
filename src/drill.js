@@ -23,7 +23,7 @@ loadConfig();
 
 function loadConfig() {
   if (localStorage.getItem("darkMode") == 1) {
-    document.documentElement.dataset.theme = "dark";
+    document.documentElement.setAttribute("data-bs-theme", "dark");
   }
   if (localStorage.getItem("hint") == 1) {
     document.getElementById("hint").textContent = "EASY";
@@ -33,13 +33,24 @@ function loadConfig() {
   }
 }
 
+// TODO: :host-context() is not supportted by Safari/Firefox now
 function toggleDarkMode() {
   if (localStorage.getItem("darkMode") == 1) {
     localStorage.setItem("darkMode", 0);
-    delete document.documentElement.dataset.theme;
+    document.documentElement.setAttribute("data-bs-theme", "light");
+    boxes.forEach((box) => {
+      [...box.shadowRoot.querySelectorAll("object, canvas")].forEach((canvas) => {
+        canvas.removeAttribute("style");
+      });
+    });
   } else {
     localStorage.setItem("darkMode", 1);
-    document.documentElement.dataset.theme = "dark";
+    document.documentElement.setAttribute("data-bs-theme", "dark");
+    boxes.forEach((box) => {
+      [...box.shadowRoot.querySelectorAll("object, canvas")].forEach((canvas) => {
+        canvas.setAttribute("style", "filter: invert(1) hue-rotate(180deg);");
+      });
+    });
   }
 }
 
@@ -134,7 +145,7 @@ function speak(text) {
 }
 
 function prevTehon(event) {
-  const object = event.target.parentNode.parentNode.querySelector(".tehon");
+  const object = event.target.getRootNode().querySelector(".tehon");
   const svg = object.contentDocument;
   const kanjiId = object.dataset.id;
   let currPos = 1;
@@ -162,7 +173,7 @@ function prevTehon(event) {
 }
 
 function nextTehon(event) {
-  const object = event.target.parentNode.parentNode.querySelector(".tehon");
+  const object = event.target.getRootNode().querySelector(".tehon");
   const svg = object.contentDocument;
   const kanjiId = object.dataset.id;
   let currPos = 0;
@@ -209,9 +220,11 @@ customElements.define("problem-box", ProblemBox);
 class TehonBox extends HTMLElement {
   constructor() {
     super();
-    const template = document.getElementById("tehon-box").content.cloneNode(
-      true,
-    );
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot.adoptedStyleSheets = [globalCSS];
+
+    const template = document.getElementById("tehon-box")
+      .content.cloneNode(true);
     if (window.innerWidth >= 768) {
       const canvases = template.querySelectorAll("canvas");
       [...canvases].forEach((canvas) => {
@@ -221,7 +234,13 @@ class TehonBox extends HTMLElement {
     }
     template.querySelector(".prevTehon").onclick = prevTehon;
     template.querySelector(".nextTehon").onclick = nextTehon;
-    this.attachShadow({ mode: "open" }).appendChild(template);
+    this.shadowRoot.appendChild(template);
+
+    if (document.documentElement.getAttribute("data-bs-theme") == "dark") {
+      [...this.shadowRoot.querySelectorAll("object, canvas")].forEach((canvas) => {
+        canvas.setAttribute("style", "filter: invert(1) hue-rotate(180deg);");
+      });
+    }
   }
 }
 customElements.define("tehon-box", TehonBox);
@@ -229,6 +248,9 @@ customElements.define("tehon-box", TehonBox);
 class TegakiBox extends HTMLElement {
   constructor() {
     super();
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot.adoptedStyleSheets = [globalCSS];
+
     const template = document.getElementById("tegaki-box")
       .content.cloneNode(true);
     if (window.innerWidth >= 768) {
@@ -238,7 +260,13 @@ class TegakiBox extends HTMLElement {
         canvas.setAttribute("height", canvasSize);
       });
     }
-    this.attachShadow({ mode: "open" }).appendChild(template);
+    this.shadowRoot.appendChild(template);
+
+    if (document.documentElement.getAttribute("data-bs-theme") == "dark") {
+      [...this.shadowRoot.querySelectorAll("object, canvas")].forEach((canvas) => {
+        canvas.setAttribute("style", "filter: invert(1) hue-rotate(180deg);");
+      });
+    }
   }
 }
 customElements.define("tegaki-box", TegakiBox);
@@ -298,6 +326,7 @@ function loadSVG(kanjiId, parentNode, pos, loadCanvas) {
   } else {
     box = new TehonBox();
   }
+  boxes.push(box);
   const object = box.shadowRoot.querySelector("object");
   object.setAttribute("data", kanjivgDir + "/" + kanjiId + ".svg");
   object.setAttribute("data-id", kanjiId);
@@ -909,6 +938,7 @@ function getGlobalCSS() {
   return css;
 }
 
+const boxes = [];
 const globalCSS = getGlobalCSS();
 initQuery();
 
