@@ -131,14 +131,14 @@ function loadVoices() {
     }
   });
   allVoicesObtained.then((voices) => {
-    englishVoices = voices.filter((voice) => voice.lang == "ja-JP");
+    japaneseVoices = voices.filter((voice) => voice.lang == "ja-JP");
   });
 }
 
 function speak(text) {
   speechSynthesis.cancel();
   const msg = new SpeechSynthesisUtterance(text);
-  msg.voice = englishVoices[Math.floor(Math.random() * englishVoices.length)];
+  msg.voice = japaneseVoices[Math.floor(Math.random() * japaneseVoices.length)];
   msg.lang = "ja-JP";
   speechSynthesis.speak(msg);
   return msg;
@@ -287,7 +287,7 @@ function getKakusu(object, kanjiId) {
 }
 
 function getTehonCanvas(object, kanjiId, kakusu, kakuNo) {
-  return new Promise(function (resolve) {
+  return new Promise((resolve) => {
     const clonedContent = object.contentDocument.cloneNode(true);
     const id = "kvg:StrokePaths_" + kanjiId;
     const paths = clonedContent.querySelector('[id="' + id + '"]');
@@ -303,7 +303,7 @@ function getTehonCanvas(object, kanjiId, kakusu, kakuNo) {
     const url = URL.createObjectURL(blob);
     const img = new Image();
     img.src = url;
-    img.onload = function () {
+    img.onload = () => {
       const canvas = document.createElement("canvas");
       canvas.width = canvasSize;
       canvas.height = canvasSize;
