@@ -92,4 +92,4 @@ document.getElementById("search").addEventListener("keydown", (event) => {
     const words = event.target.value;
     location.href = `/touch-50on/drill/?q=${words}`;
   }
-}, false);
+});
