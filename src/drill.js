@@ -349,9 +349,9 @@ function showKanjiScore(
 ) {
   kanjiScore = Math.floor(kanjiScore);
   if (kanjiScore >= 80) {
-    playAudio("correct");
+    playAudio("correct", 0.3);
   } else {
-    playAudio("incorrect");
+    playAudio("incorrect", 0.3);
   }
   scoreObj.classList.remove("d-none");
   scoreObj.textContent = kanjiScore;
