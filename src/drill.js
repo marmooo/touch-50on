@@ -9,7 +9,7 @@ let prevCanvasSize;
 let canvasSize = 140;
 let maxWidth = 2;
 const repeatCount = 3;
-if (window.innerWidth >= 768) {
+if (globalThis.innerWidth >= 768) {
   canvasSize = 280;
   maxWidth = 4;
 }
@@ -232,7 +232,7 @@ class TehonBox extends HTMLElement {
 
     const template = document.getElementById("tehon-box")
       .content.cloneNode(true);
-    if (window.innerWidth >= 768) {
+    if (globalThis.innerWidth >= 768) {
       const canvases = template.querySelectorAll("canvas");
       [...canvases].forEach((canvas) => {
         canvas.setAttribute("width", canvasSize);
@@ -262,7 +262,7 @@ class TegakiBox extends HTMLElement {
 
     const template = document.getElementById("tegaki-box")
       .content.cloneNode(true);
-    if (window.innerWidth >= 768) {
+    if (globalThis.innerWidth >= 768) {
       const canvases = template.querySelectorAll("canvas");
       [...canvases].forEach((canvas) => {
         canvas.setAttribute("width", canvasSize);
@@ -467,7 +467,7 @@ function setScoringButton(
             const headerHeight = document.getElementById("header").offsetHeight;
             const top = next.getBoundingClientRect().top +
               document.documentElement.scrollTop - headerHeight;
-            window.scrollTo({ top: top, behavior: "smooth" });
+            globalThis.scrollTo({ top: top, behavior: "smooth" });
           }
         }
         let clearedKanjis = localStorage.getItem("touch-50on");
@@ -605,9 +605,9 @@ function loadDrill(problems1, problems2) {
     const pads = loadProblem(problems1[i], problems2[i]);
     tegakiPads = tegakiPads.concat(pads);
   }
-  window.onresize = function () {
+  globalThis.onresize = function () {
     prevCanvasSize = canvasSize;
-    if (window.innerWidth >= 768) {
+    if (globalThis.innerWidth >= 768) {
       canvasSize = 280;
       maxWidth = 4;
     } else {
