@@ -499,7 +499,8 @@ function setSignaturePad(object) {
 function setEraser(tegakiPad, tegakiPanel, tehonPanel, object, kanjiId) {
   const currKanji = object.getRootNode().host;
   const kanjiPos = [...tegakiPanel.children].findIndex((x) => x == currKanji);
-  const eraser = tehonPanel.children[kanjiPos].shadowRoot.querySelector(".eraser");
+  const eraser = tehonPanel.children[kanjiPos]
+    .shadowRoot.querySelector(".eraser");
   eraser.onclick = () => {
     const data = tegakiPad.toData();
     if (data) {
