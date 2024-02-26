@@ -1,18 +1,22 @@
-const kanjivgDir = "/kanjivg";
-let prevCanvasSize;
-let canvasSize = 140;
-let maxWidth = 2;
-if (window.innerWidth >= 768) {
-  canvasSize = 280;
-  maxWidth = 4;
-}
-let level = 2;
 const audioContext = new AudioContext();
 const audioBufferCache = {};
 loadAudio("stupid", "/touch-50on/mp3/stupid5.mp3");
 loadAudio("correct", "/touch-50on/mp3/correct3.mp3");
 loadAudio("correctAll", "/touch-50on/mp3/correct1.mp3");
 loadAudio("incorrect", "/touch-50on/mp3/incorrect1.mp3");
+const kanjivgDir = "/kanjivg";
+let prevCanvasSize;
+let canvasSize = 140;
+let maxWidth = 2;
+const repeatCount = 3;
+if (window.innerWidth >= 768) {
+  canvasSize = 280;
+  maxWidth = 4;
+}
+let level = 2;
+let clearCount = 0;
+let kanjis = "";
+let mode = "hirahira";
 let japaneseVoices = [];
 loadVoices();
 loadConfig();
@@ -70,16 +74,16 @@ function toggleHint(event) {
 }
 
 function toggleScroll() {
-  const scrollable = document.getElementById("scrollable");
-  const pinned = document.getElementById("pinned");
-  if (scrollable.classList.contains("d-none")) {
+  const scrollOn = document.getElementById("scrollOn");
+  const scrollOff = document.getElementById("scrollOff");
+  if (scrollOn.classList.contains("d-none")) {
     document.body.style.overflow = "visible";
-    scrollable.classList.remove("d-none");
-    pinned.classList.add("d-none");
+    scrollOn.classList.remove("d-none");
+    scrollOff.classList.add("d-none");
   } else {
     document.body.style.overflow = "hidden";
-    scrollable.classList.add("d-none");
-    pinned.classList.remove("d-none");
+    scrollOn.classList.add("d-none");
+    scrollOff.classList.remove("d-none");
   }
 }
 
@@ -137,13 +141,14 @@ function loadVoices() {
   });
 }
 
-function speak(text) {
+function loopVoice(text, n) {
   speechSynthesis.cancel();
   const msg = new SpeechSynthesisUtterance(text);
   msg.voice = japaneseVoices[Math.floor(Math.random() * japaneseVoices.length)];
   msg.lang = "ja-JP";
-  speechSynthesis.speak(msg);
-  return msg;
+  for (let i = 0; i < n; i++) {
+    speechSynthesis.speak(msg);
+  }
 }
 
 function prevTehon(event) {
@@ -449,9 +454,15 @@ function setScoringButton(
     getProblemScores(tegakiPanel, tehonPanel, objects, tegakiPads).then(
       (scores) => {
         if (scores.every((score) => score >= 80)) {
+          clearCount += 1;
           problemBox.shadowRoot.querySelector(".guard").style.height = "100%";
           const next = problemBox.nextElementSibling;
           if (next) {
+            const voiceOff = document.getElementById("voiceOn")
+              .classList.contains("d-none");
+            if (!voiceOff) {
+              loopVoice(kanjis[clearCount].toLowerCase(), repeatCount);
+            }
             next.shadowRoot.querySelector(".guard").style.height = "0";
             const headerHeight = document.getElementById("header").offsetHeight;
             const top = next.getBoundingClientRect().top +
@@ -511,7 +522,7 @@ function setSound(tehonPanel, object, text) {
   let hira = kanaToHira(text);
   sound.onclick = () => {
     if (hira == "ん") hira = "んん";
-    speak(hira);
+    loopVoice(hira.toLowerCase(), repeatCount);
   };
 }
 
@@ -849,8 +860,6 @@ function convHirakana(str) {
   return str;
 }
 
-let kanjis = "";
-let mode = "hirahira";
 function initQuery() {
   let problems1, problems2;
   const query = new URLSearchParams(location.search);
@@ -887,6 +896,7 @@ function initQuery() {
         problems1 = kana50on;
         problems2 = hira50on;
       }
+      kanjis = hira50on;
     } else {
       const hiradakuon = Array.from(
         "がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ",
@@ -907,6 +917,7 @@ function initQuery() {
         problems1 = kanadakuon;
         problems2 = hiradakuon;
       }
+      kanjis = hiradakuon;
     }
   }
   loadDrill(problems1, problems2);
