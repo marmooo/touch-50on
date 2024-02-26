@@ -450,7 +450,7 @@ function setScoringButton(
   word,
 ) {
   const scoring = problemBox.shadowRoot.querySelector(".scoring");
-  scoring.addEventListener("click", function () {
+  scoring.addEventListener("click", () => {
     getProblemScores(tegakiPanel, tehonPanel, objects, tegakiPads).then(
       (scores) => {
         if (scores.every((score) => score >= 80)) {
@@ -499,21 +499,21 @@ function setSignaturePad(object) {
 function setEraser(tegakiPad, tegakiPanel, tehonPanel, object, kanjiId) {
   const currKanji = object.getRootNode().host;
   const kanjiPos = [...tegakiPanel.children].findIndex((x) => x == currKanji);
-  tehonPanel.children[kanjiPos].shadowRoot.querySelector(".eraser").onclick =
-    function () {
-      const data = tegakiPad.toData();
-      if (data) {
-        tegakiPad.clear();
-      }
-      const pos = parseInt(object.dataset.pos);
-      const scoreObj = tegakiPanel.children[pos].shadowRoot.querySelector(
-        ".score",
-      );
-      scoreObj.classList.add("d-none");
-      if (localStorage.getItem("hint") != 1) {
-        changeAllColor(object, kanjiId, "none");
-      }
-    };
+  const eraser = tehonPanel.children[kanjiPos].shadowRoot.querySelector(".eraser");
+  eraser.onclick = () => {
+    const data = tegakiPad.toData();
+    if (data) {
+      tegakiPad.clear();
+    }
+    const pos = parseInt(object.dataset.pos);
+    const scoreObj = tegakiPanel.children[pos].shadowRoot.querySelector(
+      ".score",
+    );
+    scoreObj.classList.add("d-none");
+    if (localStorage.getItem("hint") != 1) {
+      changeAllColor(object, kanjiId, "none");
+    }
+  };
 }
 
 function setSound(tehonPanel, object, text) {
@@ -605,7 +605,7 @@ function loadDrill(problems1, problems2) {
     const pads = loadProblem(problems1[i], problems2[i]);
     tegakiPads = tegakiPads.concat(pads);
   }
-  globalThis.onresize = function () {
+  globalThis.addEventListener("resize", () => {
     prevCanvasSize = canvasSize;
     if (globalThis.innerWidth >= 768) {
       canvasSize = 280;
@@ -618,7 +618,7 @@ function loadDrill(problems1, problems2) {
       resizeTegakiContents(tegakiPads);
       resizeTehonContents();
     }
-  };
+  });
 }
 
 // 器用差の大きい低学年の採点が緩くなるよう太さを変える
@@ -816,7 +816,7 @@ function report() {
     playAudio("stupid");
     document.getElementById("report").classList.add("d-none");
     document.getElementById("incorrectReport").classList.remove("d-none");
-    setTimeout(function () {
+    setTimeout(() => {
       document.getElementById("report").classList.remove("d-none");
       document.getElementById("incorrectReport").classList.add("d-none");
     }, 6000);
@@ -834,14 +834,14 @@ function report() {
 // }
 
 function kanaToHira(str) {
-  return str.replace(/[\u30a1-\u30f6]/g, function (match) {
+  return str.replace(/[ァ-ヶ]/g, (match) => {
     const chr = match.charCodeAt(0) - 0x60;
     return String.fromCharCode(chr);
   });
 }
 
 // function hiraToKana(str) {
-//   return str.replace(/[\u3041-\u3096]/g, function (match) {
+//   return str.replace(/[ぁ-ゖ]/g, (match) => {
 //     const chr = match.charCodeAt(0) + 0x60;
 //     return String.fromCharCode(chr);
 //   });
@@ -849,10 +849,10 @@ function kanaToHira(str) {
 
 function convHirakana(str) {
   for (let i = 0; i < str.length; i++) {
-    if (str[i].test(/[\u3041-\u3096]/)) {
+    if (str[i].test(/[ぁ-ゖ]/)) {
       const chr = str[i].charCodeAt(0) + 0x60;
       str[i] = String.fromCharCode(chr);
-    } else if (str[i].test(/[\u30a1-\u30f6]/)) {
+    } else if (str[i].test(/[ァ-ヶ]/)) {
       const chr = str[i].charCodeAt(0) - 0x60;
       str[i] = String.fromCharCode(chr);
     }
