@@ -285,9 +285,8 @@ customElements.define("tegaki-box", TegakiBox);
 function getKakusu(object, kanjiId) {
   let max = 1;
   while (true) {
-    const path = object.contentDocument.getElementById(
-      "kvg:" + kanjiId + "-s" + max,
-    );
+    const path = object.contentDocument
+      .getElementById("kvg:" + kanjiId + "-s" + max);
     if (path) {
       max += 1;
     } else {
@@ -420,12 +419,10 @@ function getProblemScores(tegakiPanel, tehonPanel, objects, tegakiPads) {
     let kanjiScores = 0;
     const tegakiData = tegakiPads[i].toData();
     if (tegakiData.length != 0) {
-      const tehonKanji = tehonPanel.children[pos].shadowRoot.querySelector(
-        "object",
-      );
-      const scoreObj = tegakiPanel.children[pos].shadowRoot.querySelector(
-        ".score",
-      );
+      const tehonKanji = tehonPanel.children[pos]
+        .shadowRoot.querySelector("object");
+      const scoreObj = tegakiPanel.children[pos]
+        .shadowRoot.querySelector(".score");
       const kakuScores = getKakuScores(tegakiData, object, kanjiId, kakusu);
       kanjiScores = getKanjiScores(
         kakuScores,
@@ -507,9 +504,8 @@ function setEraser(tegakiPad, tegakiPanel, tehonPanel, object, kanjiId) {
       tegakiPad.clear();
     }
     const pos = parseInt(object.dataset.pos);
-    const scoreObj = tegakiPanel.children[pos].shadowRoot.querySelector(
-      ".score",
-    );
+    const scoreObj = tegakiPanel.children[pos]
+      .shadowRoot.querySelector(".score");
     scoreObj.classList.add("d-none");
     if (localStorage.getItem("hint") != 1) {
       changeAllColor(object, kanjiId, "none");
