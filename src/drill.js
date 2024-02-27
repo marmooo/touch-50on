@@ -85,6 +85,18 @@ function toggleScroll() {
   }
 }
 
+function toggleVoice() {
+  const voiceOn = document.getElementById("voiceOn");
+  const voiceOff = document.getElementById("voiceOff");
+  if (voiceOn.classList.contains("d-none")) {
+    voiceOn.classList.remove("d-none");
+    voiceOff.classList.add("d-none");
+  } else {
+    voiceOn.classList.add("d-none");
+    voiceOff.classList.remove("d-none");
+  }
+}
+
 async function playAudio(name, volume) {
   const audioBuffer = await loadAudio(name, audioBufferCache[name]);
   const sourceNode = audioContext.createBufferSource();
@@ -937,6 +949,7 @@ initQuery();
 document.getElementById("toggleDarkMode").onclick = toggleDarkMode;
 document.getElementById("hint").onclick = toggleHint;
 document.getElementById("toggleScroll").onclick = toggleScroll;
+document.getElementById("toggleVoice").onclick = toggleVoice;
 document.getElementById("reportButton").onclick = report;
 document.addEventListener("click", unlockAudio, {
   once: true,
