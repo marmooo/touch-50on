@@ -1,15 +1,9 @@
-const hira50on = Array.from(
-  "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわん",
-);
-const kana50on = Array.from(
-  "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワン",
-);
-const hiradakuon = Array.from(
-  "がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ",
-);
-const kanadakuon = Array.from(
-  "ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ",
-);
+const hira50on =
+  "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわん";
+const kana50on =
+  "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワン";
+const hiradakuon = "がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ";
+const kanadakuon = "ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ";
 loadConfig();
 
 function changeLevel(event) {
@@ -64,7 +58,7 @@ function generateDrill() {
 
 function setProblems(obj, words) {
   let html = "";
-  words.forEach((word) => {
+  Array.from(words).forEach((word) => {
     const q = word.repeat(6);
     const url = `/touch-50on/drill/?q=${q}`;
     const klass = "me-1 mb-1 btn btn-sm btn-outline-secondary";
@@ -74,12 +68,12 @@ function setProblems(obj, words) {
 }
 
 const problems1 = document.getElementById("cleared50on");
-const kanjis1 = hira50on.concat(kana50on);
+const kanjis1 = hira50on + kana50on;
 setProblems(problems1, kanjis1);
 setCleared(problems1);
 
 const problems2 = document.getElementById("clearedDakuon");
-const kanjis2 = hiradakuon.concat(kanadakuon);
+const kanjis2 = hiradakuon + kanadakuon;
 setProblems(problems2, kanjis2);
 setCleared(problems2);
 

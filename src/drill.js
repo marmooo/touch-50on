@@ -604,28 +604,6 @@ function resizeTehonContents() {
   }
 }
 
-function loadDrill(problems1, problems2) {
-  let tegakiPads = [];
-  for (let i = 0; i < problems1.length; i++) {
-    const pads = loadProblem(problems1[i], problems2[i]);
-    tegakiPads = tegakiPads.concat(pads);
-  }
-  globalThis.addEventListener("resize", () => {
-    prevCanvasSize = canvasSize;
-    if (globalThis.innerWidth >= 768) {
-      canvasSize = 280;
-      maxWidth = 4;
-    } else {
-      canvasSize = 140;
-      maxWidth = 2;
-    }
-    if (prevCanvasSize != canvasSize) {
-      resizeTegakiContents(tegakiPads);
-      resizeTehonContents();
-    }
-  });
-}
-
 // 器用差の大きい低学年の採点が緩くなるよう太さを変える
 function setStrokeWidth(kakusu) {
   return 15 + 6 / kakusu;
@@ -828,16 +806,6 @@ function report() {
   }
 }
 
-// function shuffle(array) {
-//   for (let i = array.length - 1; i > 0; i--) {
-//     const r = Math.floor(Math.random() * (i + 1));
-//     const tmp = array[i];
-//     array[i] = array[r];
-//     array[r] = tmp;
-//   }
-//   return array;
-// }
-
 function kanaToHira(str) {
   return str.replace(/[ァ-ヶ]/g, (match) => {
     const chr = match.charCodeAt(0) - 0x60;
@@ -845,89 +813,95 @@ function kanaToHira(str) {
   });
 }
 
-// function hiraToKana(str) {
-//   return str.replace(/[ぁ-ゖ]/g, (match) => {
-//     const chr = match.charCodeAt(0) + 0x60;
-//     return String.fromCharCode(chr);
-//   });
-// }
+function hiraToKana(str) {
+  return str.replace(/[ぁ-ゖ]/g, (match) => {
+    const chr = match.charCodeAt(0) + 0x60;
+    return String.fromCharCode(chr);
+  });
+}
 
-function convHirakana(str) {
-  for (let i = 0; i < str.length; i++) {
-    if (str[i].test(/[ぁ-ゖ]/)) {
-      const chr = str[i].charCodeAt(0) + 0x60;
-      str[i] = String.fromCharCode(chr);
-    } else if (str[i].test(/[ァ-ヶ]/)) {
-      const chr = str[i].charCodeAt(0) - 0x60;
-      str[i] = String.fromCharCode(chr);
-    }
+function initProblems() {
+  let problems1, problems2;
+  const hira50on =
+    "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわん";
+  const kana50on =
+    "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワン";
+  const hiraseion = "かきくけこさしすせそたちつてとはひふへほはひふへほ";
+  const hiradakuon = "がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ";
+  const kanaseion = "カキクケコサシスセソタチツテトハヒフヘホハヒフヘホ";
+  const kanadakuon = "ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ";
+  switch (mode) {
+    case "hh": // from Hiragana to Hiragana
+      console.log(kanjis || hira50on);
+      problems1 = kanaToHira(kanjis || hira50on);
+      problems2 = kanaToHira(kanjis || hira50on);
+      break;
+    case "hk": // from Hiragana to Katakana
+      problems1 = kanaToHira(kanjis || hira50on);
+      problems2 = hiraToKana(kanjis || kana50on);
+      break;
+    case "kh": // from Katakana to Katakana
+      problems1 = hiraToKana(kanjis || kana50on);
+      problems2 = kanaToHira(kanjis || hira50on);
+      break;
+    case "kk": // from Katakana to Katakana
+      problems1 = hiraToKana(kanjis || kana50on);
+      problems2 = hiraToKana(kanjis || kana50on);
+      break;
+    case "dd": // from normal to dakuon
+      problems1 = kanjis || hiradakuon;
+      problems2 = kanjis || hiradakuon;
+      break;
+    case "DD": // from normal to dakuon
+      problems1 = kanjis || kanadakuon;
+      problems2 = kanjis || kanadakuon;
+      break;
+    case "nd": // from normal to dakuon
+      problems1 = Array.from(kanjis || hiraseion)
+        .map((kanji) => kanji.normalize("NFD")[0]);
+      problems2 = kanjis || hiradakuon;
+      break;
+    case "ND": // from normal to dakuon
+      problems1 = Array.from(kanjis || kanaseion)
+        .map((kanji) => kanji.normalize("NFD")[0]);
+      problems2 = kanjis || kanadakuon;
+      break;
+    default:
+      problems1 = kanjis || hira50on;
+      problems2 = kanjis || hira50on;
   }
-  return str;
+  initDrill(problems1, problems2);
+}
+
+function initDrill(problems1, problems2) {
+  const tegakiPads = [];
+  for (let i = 0; i < problems1.length; i++) {
+    const pads = loadProblem(problems1[i], problems2[i]);
+    tegakiPads.push(pads);
+  }
+  globalThis.addEventListener("resize", () => {
+    prevCanvasSize = canvasSize;
+    if (globalThis.innerWidth >= 768) {
+      canvasSize = 280;
+      maxWidth = 4;
+    } else {
+      canvasSize = 140;
+      maxWidth = 2;
+    }
+    if (prevCanvasSize != canvasSize) {
+      resizeTegakiContents(tegakiPads);
+      resizeTehonContents();
+    }
+  });
+  document.getElementById("problems").children[0]
+    .shadowRoot.querySelector(".guard").style.height = "0";
 }
 
 function initQuery() {
-  let problems1, problems2;
-  const query = new URLSearchParams(location.search);
-  mode = query.get("mode");
-  kanjis = query.get("q");
-  const problemQuery = query.get("problem");
-  if (kanjis) {
-    if (mode == "conv") {
-      const conved = convHirakana(kanjis);
-      problems1 = kanjis.split("");
-      problems2 = conved.split("");
-    } else {
-      problems1 = kanjis.split("");
-      problems2 = kanjis.split("");
-    }
-  } else {
-    if (problemQuery == "50on") {
-      const hira50on = Array.from(
-        "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわん",
-      );
-      const kana50on = Array.from(
-        "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨワン",
-      );
-      if (mode == "hirahira") {
-        problems1 = hira50on;
-        problems2 = hira50on;
-      } else if (mode == "hirakana") {
-        problems1 = hira50on;
-        problems2 = kana50on;
-      } else if (mode == "kanakana") {
-        problems1 = kana50on;
-        problems2 = kana50on;
-      } else {
-        problems1 = kana50on;
-        problems2 = hira50on;
-      }
-      kanjis = hira50on;
-    } else {
-      const hiradakuon = Array.from(
-        "がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ",
-      );
-      const kanadakuon = Array.from(
-        "ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ",
-      );
-      if (mode == "hirahira") {
-        problems1 = hiradakuon;
-        problems2 = hiradakuon;
-      } else if (mode == "hirakana") {
-        problems1 = hiradakuon;
-        problems2 = kanadakuon;
-      } else if (mode == "kanakana") {
-        problems1 = kanadakuon;
-        problems2 = kanadakuon;
-      } else {
-        problems1 = kanadakuon;
-        problems2 = hiradakuon;
-      }
-      kanjis = hiradakuon;
-    }
-  }
-  loadDrill(problems1, problems2);
-  document.getElementById("problems").children[0]
-    .shadowRoot.querySelector(".guard").style.height = "0";
+  const params = new URLSearchParams(location.search);
+  kanjis = params.get("q");
+  mode = params.get("mode");
+  initProblems();
 }
 
 function getGlobalCSS() {
