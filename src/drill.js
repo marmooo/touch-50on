@@ -820,7 +820,7 @@ function hiraToKana(str) {
   });
 }
 
-function initProblems() {
+function initDrill() {
   let problems1, problems2;
   const hira50on =
     "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわん";
@@ -870,15 +870,13 @@ function initProblems() {
       problems1 = kanjis || hira50on;
       problems2 = kanjis || hira50on;
   }
-  initDrill(problems1, problems2);
-}
-
-function initDrill(problems1, problems2) {
   const tegakiPads = [];
   for (let i = 0; i < problems1.length; i++) {
     const pads = loadProblem(problems1[i], problems2[i]);
     tegakiPads.push(pads);
   }
+  document.getElementById("problems").children[0]
+    .shadowRoot.querySelector(".guard").style.height = "0";
   globalThis.addEventListener("resize", () => {
     prevCanvasSize = canvasSize;
     if (globalThis.innerWidth >= 768) {
@@ -893,15 +891,12 @@ function initDrill(problems1, problems2) {
       resizeTehonContents();
     }
   });
-  document.getElementById("problems").children[0]
-    .shadowRoot.querySelector(".guard").style.height = "0";
 }
 
 function initQuery() {
   const params = new URLSearchParams(location.search);
   kanjis = params.get("q");
   mode = params.get("mode");
-  initProblems();
 }
 
 function getGlobalCSS() {
@@ -917,8 +912,9 @@ function getGlobalCSS() {
 }
 
 const boxes = [];
-const globalCSS = getGlobalCSS();
 initQuery();
+const globalCSS = getGlobalCSS();
+initDrill();
 
 document.getElementById("toggleDarkMode").onclick = toggleDarkMode;
 document.getElementById("hint").onclick = toggleHint;
