@@ -1,4 +1,4 @@
-const audioContext = new AudioContext();
+const audioContext = new globalThis.AudioContext();
 const audioBufferCache = {};
 loadAudio("stupid", "/touch-50on/mp3/stupid5.mp3");
 loadAudio("correct", "/touch-50on/mp3/correct3.mp3");
@@ -153,7 +153,7 @@ function loadVoices() {
 
 function loopVoice(text, n) {
   speechSynthesis.cancel();
-  const msg = new SpeechSynthesisUtterance(text);
+  const msg = new globalThis.SpeechSynthesisUtterance(text);
   msg.voice = japaneseVoices[Math.floor(Math.random() * japaneseVoices.length)];
   msg.lang = "ja-JP";
   for (let i = 0; i < n; i++) {
