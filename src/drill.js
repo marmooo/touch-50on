@@ -1,3 +1,5 @@
+import signaturePad from "https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/+esm";
+
 const audioContext = new globalThis.AudioContext();
 const audioBufferCache = {};
 loadAudio("stupid", "/touch-50on/mp3/stupid5.mp3");
@@ -491,7 +493,7 @@ function setScoringButton(
 
 function setSignaturePad(object) {
   const canvas = object.parentNode.querySelector(".tegaki");
-  const pad = new SignaturePad(canvas, {
+  const pad = new signaturePad(canvas, {
     minWidth: maxWidth,
     maxWidth: maxWidth,
     penColor: "black",
@@ -717,7 +719,7 @@ function getKakuScores(tegakiData, object, kanjiId, kakusu) {
         markerCanvas.setAttribute("width", canvasSize);
         markerCanvas.setAttribute("height", canvasSize);
         const markerContext = markerCanvas.getContext("2d", { alpha: false });
-        const markerPad = new SignaturePad(markerCanvas, {
+        const markerPad = new signaturePad(markerCanvas, {
           minWidth: markerWidth,
           maxWidth: markerWidth,
           penColor: "black",
