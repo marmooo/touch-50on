@@ -1,4 +1,4 @@
-import signaturePad from "https://cdn.jsdelivr.net/npm/signature_pad@5.0.1/+esm";
+import signaturePad from "https://cdn.jsdelivr.net/npm/signature_pad@5.0.2/+esm";
 
 const audioContext = new globalThis.AudioContext();
 const audioBufferCache = {};
