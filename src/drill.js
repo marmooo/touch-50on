@@ -1,4 +1,4 @@
-import signaturePad from "https://cdn.jsdelivr.net/npm/signature_pad@5.0.2/+esm";
+import signaturePad from "https://cdn.jsdelivr.net/npm/signature_pad@5.0.3/+esm";
 
 const kanjivgDir = "/kanjivg";
 let prevCanvasSize;
