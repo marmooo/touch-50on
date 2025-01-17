@@ -396,15 +396,19 @@ function showKanjiScore(
   }
   scoreObj.classList.remove("d-none");
   scoreObj.textContent = kanjiScore;
-  if (mode != "conv" && mode != "hirakana" && mode != "kanahira") {
-    for (let i = 0; i < kakusu; i++) {
-      changePathColor(i + 1, tehonKanji, kanjiId, "black");
-    }
-    for (let i = 0; i < kakusu; i++) {
-      if (!kakuScores[i][0] || kakuScores[i][0] < 80) {
-        changePathColor(i + 1, tehonKanji, kanjiId, "red");
+  switch (mode) {
+    case "hh":
+    case "kk":
+    case "dd":
+    case "DD":
+      for (let i = 0; i < kakusu; i++) {
+        changePathColor(i + 1, tehonKanji, kanjiId, "black");
       }
-    }
+      for (let i = 0; i < kakusu; i++) {
+        if (!kakuScores[i][0] || kakuScores[i][0] < 80) {
+          changePathColor(i + 1, tehonKanji, kanjiId, "red");
+        }
+      }
   }
   if (localStorage.getItem("hint") != 1) {
     changeAllColor(object, kanjiId, "lightgray");
@@ -855,43 +859,51 @@ function initDrill() {
   const kanadakuon = "ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ";
   switch (mode) {
     case "hh": // from Hiragana to Hiragana
-      console.log(kanjis || hira50on);
-      problems1 = kanaToHira(kanjis || hira50on);
-      problems2 = kanaToHira(kanjis || hira50on);
+      if (!kanjis) kanjis = hira50on;
+      problems1 = kanaToHira(kanjis);
+      problems2 = kanaToHira(kanjis);
       break;
     case "hk": // from Hiragana to Katakana
-      problems1 = kanaToHira(kanjis || hira50on);
-      problems2 = hiraToKana(kanjis || kana50on);
+      if (!kanjis) kanjis = kana50on;
+      problems1 = kanaToHira(kanjis);
+      problems2 = hiraToKana(kanjis);
       break;
     case "kh": // from Katakana to Katakana
-      problems1 = hiraToKana(kanjis || kana50on);
-      problems2 = kanaToHira(kanjis || hira50on);
+      if (!kanjis) kanjis = hira50on;
+      problems1 = hiraToKana(kanjis);
+      problems2 = kanaToHira(kanjis);
       break;
     case "kk": // from Katakana to Katakana
-      problems1 = hiraToKana(kanjis || kana50on);
-      problems2 = hiraToKana(kanjis || kana50on);
+      if (!kanjis) kanjis = kana50on;
+      problems1 = hiraToKana(kanjis);
+      problems2 = hiraToKana(kanjis);
       break;
     case "dd": // from normal to dakuon
-      problems1 = kanjis || hiradakuon;
-      problems2 = kanjis || hiradakuon;
+      if (!kanjis) kanjis = hiradakuon;
+      problems1 = kanjis;
+      problems2 = kanjis;
       break;
     case "DD": // from normal to dakuon
-      problems1 = kanjis || kanadakuon;
-      problems2 = kanjis || kanadakuon;
+      if (!kanjis) kanjis = kanadakuon;
+      problems1 = kanjis;
+      problems2 = kanjis;
       break;
     case "nd": // from normal to dakuon
-      problems1 = Array.from(kanjis || hiraseion)
-        .map((kanji) => kanji.normalize("NFD")[0]);
-      problems2 = kanjis || hiradakuon;
+      if (!kanjis) kanjis = hiradakuon;
+      problems1 = Array.from(kanjis)
+        .map((kanji) => kanji.normalize("NFD")[0]).join("");
+      problems2 = kanjis;
       break;
     case "ND": // from normal to dakuon
-      problems1 = Array.from(kanjis || kanaseion)
-        .map((kanji) => kanji.normalize("NFD")[0]);
-      problems2 = kanjis || kanadakuon;
+      if (!kanjis) kanjis = kanadakuon;
+      problems1 = Array.from(kanjis)
+        .map((kanji) => kanji.normalize("NFD")[0]).join("");
+      problems2 = kanjis;
       break;
     default:
-      problems1 = kanjis || hira50on;
-      problems2 = kanjis || hira50on;
+      if (!kanjis) kanjis = hira50on;
+      problems1 = kanjis;
+      problems2 = kanjis;
   }
   const tegakiPads = [];
   for (let i = 0; i < problems1.length; i++) {
