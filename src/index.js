@@ -57,7 +57,7 @@ function setProblems(obj, words) {
   Array.from(words).forEach((word) => {
     const q = word.repeat(6);
     const url = `/touch-50on/drill/?q=${q}`;
-    const klass = "me-1 mb-1 btn btn-sm btn-outline-secondary";
+    const klass = "btn btn-lg btn-outline-secondary";
     html += `<a href="${url}" class="${klass}">${word}</a>`;
   });
   obj.innerHTML = html;
